@@ -1,5 +1,6 @@
 // categories
 
+import Icon8 from ".././assets/images/categories/Icon.jpg";
 import Icon1 from ".././assets/images/categories/Icon1.jpg";
 import Icon2 from ".././assets/images/categories/Icon2.jpg";
 import Icon3 from ".././assets/images/categories/Icon3.svg";
@@ -7,7 +8,6 @@ import Icon4 from ".././assets/images/categories/Icon4.jpg";
 import Icon5 from ".././assets/images/categories/Icon5.jpg";
 import Icon6 from ".././assets/images/categories/Icon6.jpg";
 import Icon7 from ".././assets/images/categories/Icon7.jpg";
-import Icon8 from ".././assets/images/categories/Icon.jpg";
 
 export const categories = [
   {
@@ -61,11 +61,11 @@ export const categories = [
 ];
 
 // jobPosts
-import JobPost1 from ".././assets/images/featured-jobs/meta.png";
-import JobPost2 from ".././assets/images/featured-jobs/netflix.png";
-import JobPost3 from ".././assets/images/featured-jobs/microsoft.png";
-import JobPost4 from ".././assets/images/featured-jobs/reddit.png";
 import JobPost5 from ".././assets/images/featured-jobs/google.png";
+import JobPost1 from ".././assets/images/featured-jobs/meta.png";
+import JobPost3 from ".././assets/images/featured-jobs/microsoft.png";
+import JobPost2 from ".././assets/images/featured-jobs/netflix.png";
+import JobPost4 from ".././assets/images/featured-jobs/reddit.png";
 import JobPost6 from ".././assets/images/featured-jobs/spotify.png";
 
 export const jobPosts = [
@@ -78,7 +78,7 @@ export const jobPosts = [
     company: "MetaMask",
     role: ["Entry Role", "Full-Time", "Remote"],
     salary: 250,
-    date: "12 days ago",
+    date: "12 ngày trước",
     logo: JobPost1,
   },
   {
@@ -90,7 +90,7 @@ export const jobPosts = [
     company: "Netflix",
     role: ["Expert", "Full-Time", "Remote"],
     salary: 14,
-    date: "5 days ago",
+    date: "5 ngày trước",
     logo: JobPost2,
   },
   {
@@ -102,7 +102,7 @@ export const jobPosts = [
     company: "Microsoft",
     role: ["Intermediate", "Full-Time"],
     salary: 210,
-    date: "4 days ago",
+    date: "4 ngày trước",
     logo: JobPost3,
   },
   {
@@ -114,7 +114,7 @@ export const jobPosts = [
     company: "Reddit",
     role: ["Expert", "Part-Time"],
     salary: 120,
-    date: "22 days ago",
+    date: "22 ngày trước",
     logo: JobPost4,
   },
   {
@@ -126,7 +126,7 @@ export const jobPosts = [
     company: "Google",
     role: ["Intermediate", "Full-Time"],
     salary: 260,
-    date: "5 days ago",
+    date: "5 ngày trước",
     logo: JobPost5,
   },
   {
@@ -138,7 +138,7 @@ export const jobPosts = [
     company: "Spotify",
     role: ["Intermediate", "Full-Time", "Part Time"],
     salary: 170,
-    date: "8 days ago",
+    date: "8 ngày trước",
     logo: JobPost6,
   },
 ];
@@ -259,22 +259,22 @@ export const latestJobLists = [
 
 export const footerLinks = [
   {
-    title: "About",
+    title: "Chúng tôi",
     links: [
-      { name: "Campanies", url: "/companies" },
-      { name: "Pricing", url: "/pricing" },
-      { name: "Terms", url: "/terms" },
-      { name: "Advice", url: "#advice" },
-      { name: "Privacy Policy", url: "#privacy-policy" },
+      { name: "Các công ty", url: "/companies" },
+      { name: "Bảng giá", url: "/pricing" },
+      { name: "Điều khoản", url: "/terms" },
+      { name: "Tư vấn", url: "#advice" },
+      { name: "Chính sách bảo mật", url: "#privacy-policy" },
     ],
   },
   {
-    title: "Resources",
+    title: "Tài nguyên",
     links: [
-      { name: "Help Docs", url: "/docs" },
-      { name: "Guide", url: "/guide" },
-      { name: "Updates", url: "/update" },
-      { name: "Contact Us", url: "/contact" },
+      { name: "Tài liệu trợ giúp", url: "/docs" },
+      { name: "Hướng dẫn", url: "/guide" },
+      { name: "Cập nhật", url: "/update" },
+      { name: "Liên hệ", url: "/contact" },
     ],
   },
 ];

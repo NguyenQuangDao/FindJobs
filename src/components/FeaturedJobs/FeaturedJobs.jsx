@@ -1,8 +1,8 @@
+import { IoMdTime } from "react-icons/io";
+import { SlHeart } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import { jobPosts } from "../../Data/Data.js";
 import SectionText from "../SectionText/SectionText.jsx";
-import { SlHeart } from "react-icons/sl";
-import { IoMdTime } from "react-icons/io";
 
 const FeaturedJobs = () => {
   return (
@@ -11,9 +11,9 @@ const FeaturedJobs = () => {
         <div className="w-full ">
           {/* text  */}
           <SectionText
-            title="Featured"
-            subTitle="jobs"
-            ctaName="Show all jobs"
+            title="Công việc"
+            subTitle="nổi bật"
+            ctaName="Xem tất cả"
           />
           {/* lists  */}
           <div className="grid w-full gap-10 mt-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
@@ -43,7 +43,7 @@ const FeaturedJobs = () => {
                       <p className="text-sm gap-[6px] flex items-center text-textGrayColor/80 font-semibold ">
                         <span>{joblist.company}</span>
                         <span className="w-1 h-1 rounded-full bg-textDarkColor/70"></span>
-                        <span>{joblist.application} Application</span>
+                        <span>{joblist.application} Người ứng tuyển</span>
                       </p>
                     </div>
                   </div>
@@ -77,8 +77,8 @@ const FeaturedJobs = () => {
                 <div className="h-[1px] w-full bg-textGrayColor/20 my-6 "></div>
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold font-clashDisplay text-textDarkColor/80">
-                    ${joblist.salary}{" "}
-                    <span className="text-textGrayColor">/hr</span>
+                    {joblist.salary}${" "}
+                    <span className="text-textGrayColor">/giờ</span>
                   </h3>
                   <div className="flex items-center gap-2">
                     {/* icon  */}
@@ -86,7 +86,7 @@ const FeaturedJobs = () => {
                       <IoMdTime className="text-lg text-textGrayColor" />
                     </div>
                     <p className="text-sm font-medium text-textGrayColor">
-                      Posted : {joblist.date}
+                      Đã đăng: {joblist.date}
                     </p>
                   </div>
                 </div>

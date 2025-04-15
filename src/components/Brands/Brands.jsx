@@ -17,7 +17,7 @@ const Brands = () => {
     <section className="py-10 ">
       <div className="container">
         <p className="font-normal text-[18px] leading-7 text-[#202430] opacity-50 text-left">
-          Companies we helped grow
+          Các công ty chúng tôi đã giúp phát triển
         </p>
         <div className="w-full mt-5 ">
           <div className="flex flex-wrap items-center justify-start gap-3 sm:justify-between">

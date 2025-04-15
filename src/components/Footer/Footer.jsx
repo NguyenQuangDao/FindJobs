@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import Logo from "../../assets/images/Footer/Logo 2.svg";
+import Logo from "../../assets/images/Footer/JOBVN-LOGO.png";
 import { footerLinks } from "../../Data/Data.js";
 
 // social lists
 
 import {
+  RiDribbbleLine,
   RiFacebookFill,
   RiInstagramLine,
-  RiDribbbleLine,
   RiLinkedinFill,
   RiTwitterFill,
 } from "react-icons/ri";
@@ -56,8 +56,8 @@ const Footer = () => {
               <img src={Logo} alt="Logo" className="" />
             </Link>
             <p className="text-base w-5/6 mt-5 text-[#D6DDEB] ">
-              Great platform for the job seeker that passionate about startups.
-              Find your dream job easier.
+              Nền tảng tuyệt vời cho người tìm việc đam mê khởi nghiệp. Tìm công
+              việc mơ ước của bạn dễ dàng hơn.
             </p>
           </div>
           {/* menu  */}
@@ -85,17 +85,18 @@ const Footer = () => {
           {/* right  */}
           <div className="">
             <h3 className="font-semibold text-[18px] text-blue-50/90 mb-3">
-              Get job notifications
+              Nhận thông báo việc làm
             </h3>
             <p className="w-10/12 mb-5 text-gray-200/70">
-              The latest job news, articles, sent to your inbox weekly
+              Tin tức việc làm mới nhất, bài viết, được gửi đến hộp thư đến của
+              bạn hàng tuần
             </p>
             <form action="" className="w-full ">
               <div className="flex items-center w-full h-12 gap-4 overflow-hidden">
                 <input
                   type="text"
                   className="w-full h-full p-4 text-base border-none rounded-sm outline-none bg-blue-50 text-textDarkColor"
-                  placeholder="Email Address "
+                  placeholder="Địa chỉ Email"
                 />
                 <button className="py-3 transition duration-300 hover:scale-[1.056] rounded-sm px-6 bg-primaryColor text-blue-50">
                   Subscribe
@@ -110,7 +111,7 @@ const Footer = () => {
             className="text-sm sm:text-base text-gray-300/70"
             title="Created by @Ps Parwez"
           >
-            &copy; {new Date().getFullYear()} JobHuntly. All rights reserved.
+            &copy; {new Date().getFullYear()} Mọi quyền được bảo lưu.
           </p>
           <ul className="flex items-center gap-2 ">
             {socialLists.map((social) => (

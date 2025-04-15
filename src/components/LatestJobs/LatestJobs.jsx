@@ -8,9 +8,9 @@ const LatestJobs = () => {
       <div className="container relative overflow-x-hidden">
         <div className="">
           <SectionText
-            title="Latest"
-            subTitle="jobs open"
-            ctaName="Show all jobs"
+            title="Việc làm"
+            subTitle="mới nhất"
+            ctaName="Xem tất cả"
           />
 
           {/* lists  */}

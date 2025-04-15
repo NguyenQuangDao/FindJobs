@@ -1,8 +1,7 @@
 import { useState } from "react";
+import { IoClose, IoMenuSharp } from "react-icons/io5";
 import { Link, NavLink } from "react-router-dom";
-import navLogo from "../../assets/images/header/logo.svg";
-import { IoMenuSharp } from "react-icons/io5";
-import { IoClose } from "react-icons/io5";
+import navLogo from "../../assets/images/header/JOBVN-ICON.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,19 +25,19 @@ const Header = () => {
               />
             </div>
             <span className="font-redHatDisplay font-bold text-2xl leading-9 tracking-[-0.01em] text-left">
-              JobHuntly
+              JobVN
             </span>
           </Link>
           {/* Desktop Navigation Links */}
           <ul className="items-center hidden mt-1 md:flex">
             <li className="h-full leading-8">
               <NavLink to="/find-jobs" className="nav-link">
-                Find Jobs
+                Tìm việc làm
               </NavLink>
             </li>
             <li className="h-full leading-8">
               <NavLink to="/companies" className="nav-link">
-                Browse Companies
+                Khám phá các công ty
               </NavLink>
             </li>
           </ul>
@@ -47,9 +46,9 @@ const Header = () => {
         {/* Buttons */}
         <div className="items-center hidden gap-5 md:flex">
           <button className="flex-shrink-0 text-primaryColor font-semibold px-4 rounded-md hover:bg-primaryColor/10 py-[10px] transition duration-300 text-center">
-            Login
+            Đăng nhập
           </button>
-          <button className="flex-shrink-0 primary-btn">Sign Up</button>
+          <button className="flex-shrink-0 primary-btn">Đăng ký</button>
         </div>
 
         {/* Hamburger Menu */}
@@ -89,11 +88,11 @@ const Header = () => {
             </li>
             <li className="py-2">
               <button className="w-full px-4 py-2 font-semibold transition duration-300 rounded-md text-primaryColor hover:bg-primaryColor/10">
-                Login
+                Đăng nhập
               </button>
             </li>
             <li className="py-2">
-              <button className="w-full primary-btn">Sign Up</button>
+              <button className="w-full primary-btn">Đăng ký</button>
             </li>
           </ul>
         </div>

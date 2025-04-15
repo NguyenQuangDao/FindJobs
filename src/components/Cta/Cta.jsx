@@ -1,4 +1,4 @@
-import DashboardImage from "../../assets/images/cta/3.1 Dashboard Company.jpg";
+import DashboardImage from "../../assets/images/cta/findjob2.webp";
 const Cta = () => {
   return (
     <section className="py-10">
@@ -7,13 +7,16 @@ const Cta = () => {
           {/* text  */}
           <div className="flex flex-col items-start w-full gap-5">
             <h2 className="font-semibold text-4xl lg:text-5xl font-clashDisplay leading-[1.085] text-blue-50">
-              Start posting <br className="hidden sm:block" /> jobs today
+              Bắt đầu đăng tải
+              <br className="hidden sm:block" /> việc làm của bạn
+              <br className="hidden sm:block" />
+              ngay hôm nay
             </h2>
             <p className="w-5/6 text-base font-medium text-blue-50/80">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Nếu bạn đang khó khăn chúng tôi tìm người giúp đỡ bạn.
             </p>
             <button className="py-3 px-5 text-primaryColor font-semibold hover:scale-[1.02] transition duration-300 hover:opacity-90 cursor-pointer bg-blue-50  rounded-sm">
-              Sign up for free
+              Đăng ký miễn phí
             </button>
           </div>
           {/* image  */}

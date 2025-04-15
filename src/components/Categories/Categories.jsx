@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { GoArrowRight } from "react-icons/go";
+import { Link } from "react-router-dom";
 import { categories } from "../../Data/Data.js";
 import SectionText from "../SectionText/SectionText.jsx";
 
@@ -11,9 +11,9 @@ const Categories = () => {
     <section className="py-10">
       <div className="container">
         <SectionText
-          title="Explore by"
-          subTitle="category"
-          ctaName="Show all jobs"
+          title="Khám phá theo"
+          subTitle="danh mục"
+          ctaName="Xem tất cả"
         />
 
         <div className="w-full mt-10">
@@ -55,7 +55,7 @@ const Categories = () => {
                     }`}
                   >
                     <p className="text-sm sm:text-base text-balance">
-                      {category.jobs} Jobs available
+                      {category.jobs} Việc làm chờ bạn
                     </p>
                     <GoArrowRight
                       size={24}
