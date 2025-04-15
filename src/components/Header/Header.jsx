@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { IoClose, IoMenuSharp } from "react-icons/io5";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import navLogo from "../../assets/images/header/JOBVN-ICON.png";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const handleTabHeader = (e) => {
+    const { name } = e.target;
+    navigate(`/${name}`);
   };
 
   return (
@@ -37,7 +41,7 @@ const Header = () => {
             </li>
             <li className="h-full leading-8">
               <NavLink to="/companies" className="nav-link">
-                Khám phá các công ty
+                Khám phá công ty
               </NavLink>
             </li>
           </ul>
@@ -45,10 +49,28 @@ const Header = () => {
 
         {/* Buttons */}
         <div className="items-center hidden gap-5 md:flex">
-          <button className="flex-shrink-0 text-primaryColor font-semibold px-4 rounded-md hover:bg-primaryColor/10 py-[10px] transition duration-300 text-center">
+          <button
+            className={`flex-shrink-0 ${
+              location.pathname === "/login"
+                ? "primary-btn"
+                : "text-primaryColor font-semibold px-4 rounded-md hover:bg-primaryColor/10 py-[10px] transition duration-300 text-center"
+            } `}
+            name="login"
+            onClick={handleTabHeader}
+          >
             Đăng nhập
           </button>
-          <button className="flex-shrink-0 primary-btn">Đăng ký</button>
+          <button
+            className={`flex-shrink-0 ${
+              location.pathname === "/register"
+                ? "primary-btn"
+                : "text-primaryColor font-semibold px-4 rounded-md hover:bg-primaryColor/10 py-[10px] transition duration-300 text-center"
+            } `}
+            name="register"
+            onClick={handleTabHeader}
+          >
+            Đăng ký
+          </button>
         </div>
 
         {/* Hamburger Menu */}

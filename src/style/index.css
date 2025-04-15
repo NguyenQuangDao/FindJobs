@@ -12,7 +12,7 @@
 body {
   font-family: "Epilogue", sans-serif;
 
-  @apply overflow-x-hidden bg-white selection:bg-primaryColor selection:text-blue-50;
+  /* @apply overflow-x-hidden bg-white selection:bg-primaryColor selection:text-blue-50; */
 }
 @layer base {
   .nav-link {
