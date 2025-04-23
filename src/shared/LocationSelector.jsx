@@ -116,19 +116,13 @@ const LocationSelector = () => {
   //   };
 
   return (
-    <div style={{ display: "flex", gap:'10px' }}>
+    <div className="flex gap-2.5">
       {/* Select Tỉnh/Thành phố */}
       <div>
         <select
-          style={{
-            marginTop: "5px",
-            padding: "8px 10px",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-            width:'max-content'
-          }}
+          className="mt-[5px] py-2 px-[10px] border border-gray-300 rounded-[5px] w-max cursor-pointer"
           id="province"
-          value={selectedProvince}
+          value={selectedProvince || ""}
           onChange={handleProvinceChange}
           disabled={loadingProvinces}
         >
@@ -145,15 +139,9 @@ const LocationSelector = () => {
       {/* Select Quận/Huyện */}
       <div>
         <select
-          style={{
-            marginTop: "5px",
-            padding: "8px 10px",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-            width:'max-content'
-          }}
+          className="mt-[5px] py-2 px-[10px] border border-gray-300 rounded-[5px] w-max"
           id="district"
-          value={selectedDistrict}
+          value={selectedDistrict || ""}
           onChange={handleDistrictChange}
           // Disable khi chưa chọn Tỉnh/TP hoặc đang load
           disabled={!selectedProvince || loadingDistricts}

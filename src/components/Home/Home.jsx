@@ -1,8 +1,6 @@
+import { useState } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { SlLocationPin } from "react-icons/sl";
-import HeroImage from "../../assets/images/cta/findjob1.webp";
-import Pattern from "../../assets/images/Home/Pattern.svg";
-import Vector from "../../assets/images/Home/vector.svg";
 import LocationSelector from "../../shared/LocationSelector";
 
 const popularLists = ["UI Designer", "UX Researcher", "Android", "Admin"];
@@ -22,7 +20,7 @@ const Home = () => {
   //     document.removeEventListener("mousedown", handleClickOutside);
   //   };
   // }, []);
-
+  const [valueFindJob, setValueFindJob] = useState("");
   return (
     <section className="bg-[#F8F8FD] py-10 pb-0 lg:pt-5 lg:py-0 relative z-10 overflow-x-hidden">
       <div className="container relative z-10 w-full overflow-hidden">
@@ -35,7 +33,7 @@ const Home = () => {
                 <span className="text-secondryColor">2500+ Việc làm</span>
               </h1>
               <img
-                src={Vector}
+                src={"assets/images/Home/vector.svg"}
                 className="absolute -bottom-7 w-[200px] lg:w-[250px] right-10"
                 alt="Vector decoration"
               />
@@ -45,8 +43,11 @@ const Home = () => {
               đang tìm kiếm những đỉnh cao mới trong sự nghiệp.
             </p>
             {/* Search Bar */}
-            <div className="lg:py-6 relative  z-20 mt-5 max-w-full mx-auto lg:max-w-[800px] lg:w-full px-5 py-10 rounded-lg shadow-gray-400/15 bg-white shadow-xl" style={{position:'relative'}}>
-              <div className="flex flex-wrap items-center gap-5 lg:flex-nowrap">
+            <div
+              className="lg:py-6 relative  z-20 mt-5 max-w-full mx-auto lg:max-w-[800px] lg:w-full px-5 py-10 rounded-lg shadow-gray-400/15 bg-white shadow-xl"
+              style={{ position: "relative" }}
+            >
+              <div className="flex items-center gap-5 lg:flex-nowrap">
                 {/* Job Title Input */}
                 <div className="flex items-center w-full h-full gap-3 transition duration-300 border-b focus-within:border-primaryColor/70 group border-textGrayColor/20">
                   <div className="pb-3 transition duration-300 text-textGrayColor group-focus-within:text-primaryColor">
@@ -56,6 +57,7 @@ const Home = () => {
                     type="text"
                     className="w-full pb-2 outline-none text-textDarkColor"
                     placeholder="Tên công việc hoặc Từ khóa"
+                    value={valueFindJob || ""}
                   />
                 </div>
                 {/* Search Button */}
@@ -64,11 +66,11 @@ const Home = () => {
                 </button>
               </div>
               {/* Location Input */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-2">
                 <div className="text-textGrayColor">
                   <SlLocationPin size={18} />
                 </div>
-                  <p className="mt-1">Địa điểm</p>
+                <p className="mt-1">Địa điểm</p>
                 <LocationSelector />
               </div>
             </div>
@@ -78,6 +80,9 @@ const Home = () => {
                 <span
                   key={list}
                   className="inline-block px-3 py-2 mb-2 ml-2 text-sm font-medium border rounded-lg cursor-pointer sm:mb-0 text-textGrayColor/70 border-textGrayColor/10 hover:bg-blue-100/20"
+                  onClick={() => {
+                    setValueFindJob(list);
+                  }}
                 >
                   {list}
                 </span>
@@ -87,7 +92,7 @@ const Home = () => {
           {/* Right Section */}
           <div className="flex-shrink-0 w-full ">
             <img
-              src={HeroImage}
+              src={"assets/images/cta/findjob1.webp"}
               className="lg:ml-auto lg:mx-0 block lg:flex w-[300px] mx-auto xl:w-[450px]"
               alt="Hero representation"
             />
@@ -95,7 +100,7 @@ const Home = () => {
           </div>
         </div>
         <img
-          src={Pattern}
+          src={"assets/images/Home/Pattern.svg"}
           className="absolute right-0 w-[860px] top-0 -z-10"
           alt="Background pattern"
         />

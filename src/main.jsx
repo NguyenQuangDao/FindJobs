@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./style/index.css";
@@ -9,8 +9,8 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Layout from "./Layout";
 import Login from "./components/Auth/Login/Login";
+import Layout from "./Layout";
 
 import Brands from "./components/Brands/Brands";
 import Categories from "./components/Categories/Categories";
@@ -20,19 +20,19 @@ import Home from "./components/Home/Home";
 import LatestJobs from "./components/LatestJobs/LatestJobs";
 import PageNotFount from "./components/PageNotFount/PageNotFount";
 // smooth scrolling
-import Lenis from "lenis";
-import Register from './components/Auth/Register/Register';
-
+import AddCv from "./components/AddCv/AddCV";
+import Register from "./components/Auth/Register/Register";
+import JobListMain from "./components/JobListings/JobListMain";
 // Initialize Lenis
-const lenis = new Lenis();
+// const lenis = new Lenis();
 
-// Use requestAnimationFrame to continuously update the scroll
-function raf(time) {
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
+// // Use requestAnimationFrame to continuously update the scroll
+// function raf(time) {
+//   lenis.raf(time);
+//   requestAnimationFrame(raf);
+// }
 
-requestAnimationFrame(raf);
+// requestAnimationFrame(raf);
 
 export const MainLayout = () => (
   <>
@@ -51,6 +51,9 @@ const router = createBrowserRouter(
       <Route index element={<MainLayout />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/jobListMain" element={<JobListMain />} />
+      <Route path="/addCv" element={<AddCv />} />
+
       <Route path="*" element={<PageNotFount />} />
     </Route>
   )

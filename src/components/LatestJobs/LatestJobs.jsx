@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { latestJobLists } from "../../Data/Data.js";
-import Pattern from "../../assets/images/latest-jobs/Pattern.svg";
 import SectionText from "../SectionText/SectionText.jsx";
 const LatestJobs = () => {
   return (
@@ -78,7 +77,7 @@ const LatestJobs = () => {
         </div>
         {/* patter  */}
         <img
-          src={Pattern}
+          src={"assets/images/latest-jobs/Pattern.svg"}
           alt="Pattern"
           className="absolute top-0 object-contain opacity-10 w-[450px] h-full right-10 -z-10"
         />

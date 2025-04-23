@@ -4,9 +4,7 @@ const PageNotFound = () => {
       <h1 className="mb-2 text-3xl font-semibold text-textDarkColor font-clashDisplay ">
         Unnnn! Page Not Found - 404
       </h1>
-      <p className="text-base text-textDarkColor ">
-        We&apos;re working on it. Be patient!
-      </p>
+      <p className="text-base text-textDarkColor ">Back to home page!</p>
       <button
         onClick={() => window.history.back()}
         className="flex items-center gap-1 px-6 py-3 mt-10 text-base font-semibold rounded-full text-primaryColor bg-primaryColor/20"

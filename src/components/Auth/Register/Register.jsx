@@ -1,4 +1,4 @@
-import "../Auth.css";
+import "../../../style/Auth.css";
 const Register = () => {
   return (
     <div className="content">

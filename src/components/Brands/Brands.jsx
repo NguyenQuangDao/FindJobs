@@ -1,15 +1,9 @@
-import brand1 from "../../assets/images/brands/brand1.png";
-import brand2 from "../../assets/images/brands/brand2.png";
-import brand3 from "../../assets/images/brands/brand3.png";
-import brand4 from "../../assets/images/brands/brand4.png";
-import brand5 from "../../assets/images/brands/brand5.png";
-
 const brands = [
-  { name: "Vodafone image", image: brand1 },
-  { name: "Intel image", image: brand2 },
-  { name: "Tesla image ", image: brand3 },
-  { name: "AMD image", image: brand4 },
-  { name: "Talkit image", image: brand5 },
+  { name: "Vodafone image", image: "assets/images/brands/brand1.png" },
+  { name: "Intel image", image: "assets/images/brands/brand2.png" },
+  { name: "Tesla image ", image: "assets/images/brands/brand3.png" },
+  { name: "AMD image", image: "assets/images/brands/brand4.png" },
+  { name: "Talkit image", image: "assets/images/brands/brand5.png" },
 ];
 
 const Brands = () => {

@@ -1,4 +1,3 @@
-import DashboardImage from "../../assets/images/cta/findjob2.webp";
 const Cta = () => {
   return (
     <section className="py-10">
@@ -22,7 +21,7 @@ const Cta = () => {
           {/* image  */}
           <div className="self-end">
             <div className="overflow-hidden">
-              <img src={DashboardImage} alt="Dashboard image" />
+              <img src={"assets/images/cta/findjob2.webp"} alt="Dashboard image" />
             </div>
           </div>
         </div>

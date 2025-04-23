@@ -1,13 +1,12 @@
 import React from "react";
-import imgLogin from "../../../assets/images/login/imglogin.svg";
-import "../Auth.css";
+import "../../../style/Auth.css";
 const Login = () => {
   return (
     <div className="content">
       <div className="container">
         <div className="row flex-lg-nowrap">
           <div className="col-md-6">
-            <img src={imgLogin} alt="Image" className="img-fluid" />
+            <img src={"assets/images/login/imglogin.svg"} alt="Image" className="img-fluid" />
           </div>
           <div className="col-md-6 contents">
             <div className="row justify-content-center">

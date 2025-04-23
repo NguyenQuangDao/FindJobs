@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Logo from "../../assets/images/Footer/JOBVN-LOGO.png";
 import { footerLinks } from "../../Data/Data.js";
 
 // social lists
@@ -53,7 +52,7 @@ const Footer = () => {
           {/* left  */}
           <div className="">
             <Link>
-              <img src={Logo} alt="Logo" className="" />
+              <img src={"assets/images/Footer/JOBVN-LOGO.png"} alt="Logo" className="" />
             </Link>
             <p className="text-base w-5/6 mt-5 text-[#D6DDEB] ">
               Nền tảng tuyệt vời cho người tìm việc đam mê khởi nghiệp. Tìm công

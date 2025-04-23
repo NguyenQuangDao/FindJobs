@@ -14,6 +14,7 @@ const FeaturedJobs = () => {
             title="Công việc"
             subTitle="nổi bật"
             ctaName="Xem tất cả"
+            LinkCtaName="jobListMain"
           />
           {/* lists  */}
           <div className="grid w-full gap-10 mt-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
@@ -51,7 +52,7 @@ const FeaturedJobs = () => {
                   <div className=""></div>
                 </div>
                 {/* role  */}
-                <ul className="flex items-center gap-1 mt-5 mb-4">
+                <ul className="flex flex-wrap items-center gap-1 mt-5 mb-4">
                   {joblist.role.map((role, index) => (
                     <li
                       className={` ${
@@ -62,7 +63,7 @@ const FeaturedJobs = () => {
                           : index === 2
                           ? "bg-[#ff832a1f] text-[#ff832ae5]"
                           : "bg-transparent"
-                      } py-[6px] text-sm px-4 rounded-full  font-semibold`}
+                      } py-[6px] text-sm px-3 rounded-full  font-semibold`}
                       key={index}
                     >
                       {role}

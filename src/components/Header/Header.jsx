@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { IoClose, IoMenuSharp } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import navLogo from "../../assets/images/header/JOBVN-ICON.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const Header = () => {
           <Link className="flex items-center gap-2 cursor-pointer">
             <div className="w-8 h-8 rounded-full bg-slate-600/20">
               <img
-                src={navLogo}
+                src={"assets/images/header/JOBVN-ICON.png"}
                 loading="lazy"
                 alt="Logo"
                 className="object-cover w-8 h-8"
