@@ -21,6 +21,8 @@ const Home = () => {
   //   };
   // }, []);
   const [valueFindJob, setValueFindJob] = useState("");
+  console.log(valueFindJob);
+
   return (
     <section className="bg-[#F8F8FD] py-10 pb-0 lg:pt-5 lg:py-0 relative z-10 overflow-x-hidden">
       <div className="container relative z-10 w-full overflow-hidden">
@@ -57,7 +59,9 @@ const Home = () => {
                     type="text"
                     className="w-full pb-2 outline-none text-textDarkColor"
                     placeholder="Tên công việc hoặc Từ khóa"
-                    value={valueFindJob || ""}
+                    onChange={(e) => {
+                      setValueFindJob(e.target.value);
+                    }}
                   />
                 </div>
                 {/* Search Button */}

@@ -178,7 +178,7 @@
   margin-bottom: auto;
   padding: 15px 20px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   text-align: center;
   transition: all 0.3s ease-in-out;
 }
@@ -783,8 +783,10 @@
   cursor: pointer;
 }
 .proposalButton:hover {
-  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  transition: all 0.3 ease;
+  background-color: #fff;
+  color: #239852;
+  box-shadow: inset 0 0 0 2px #239852;
   transition: all 0.2s ease;
 }
 

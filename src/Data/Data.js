@@ -263,8 +263,8 @@ export const jobListings = [
     verified: true,
     proposals: "10",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company1.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company1.png",
   },
   {
     id: 2,
@@ -277,8 +277,8 @@ export const jobListings = [
     verified: true,
     proposals: "7",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company2.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company2.png",
   },
   {
     id: 3,
@@ -290,8 +290,8 @@ export const jobListings = [
     verified: true,
     proposals: "4",
     fileCount: 112,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company3.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company3.png",
   },
   {
     id: 4,
@@ -303,8 +303,8 @@ export const jobListings = [
     verified: true,
     proposals: "15",
     fileCount: 164,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company4.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company4.png",
   },
   {
     id: 5,
@@ -316,8 +316,8 @@ export const jobListings = [
     verified: true,
     proposals: "8",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company5.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company5.png",
   },
   {
     id: 6,
@@ -329,8 +329,8 @@ export const jobListings = [
     verified: false,
     proposals: "30",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company6.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company6.png",
   },
   {
     id: 7,
@@ -342,8 +342,8 @@ export const jobListings = [
     verified: true,
     proposals: "12",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company7.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company7.png",
   },
   {
     id: 8,
@@ -355,8 +355,8 @@ export const jobListings = [
     verified: true,
     proposals: "7",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company8.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company8.png",
   },
   {
     id: 9,
@@ -368,8 +368,8 @@ export const jobListings = [
     verified: true,
     proposals: "15",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company1.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company1.png",
   },
   {
     id: 10,
@@ -381,7 +381,27 @@ export const jobListings = [
     verified: true,
     proposals: "5",
     fileCount: 144,
-    linkCompany:'http://localhost:5173/jobListMain',
-    companyLogo:'assets/logoCompany/company2.png'
+    linkCompany: "http://localhost:5173/jobListMain",
+    companyLogo: "assets/logoCompany/company2.png",
   },
 ];
+
+// profile
+export const profile = {
+  name: "Nguyễn Quang Đạo",
+  email: "nguyenquangdao@gmail.com",
+  phone: "0912345678",
+  dob: "1998-05-20",
+  gender: "Nam",
+  address: "123 Đường Văn Tiến Dũng, Quận Bắc Từ Liêm, TP.Hà Nội",
+  education: "Đại học Bách Khoa Hà Nội",
+  social: [
+    "https://www.linkedin.com/in/nguyenquangdao",
+    "https://facebook.com/nguyenquangdao",
+  ],
+  avatar: "/assets/images/avatar/avatar1.jpg",
+  experience:
+    "3 năm làm lập trình viên Frontend tại Công ty ABC. Thành thạo ReactJS, HTML, CSS, JavaScript.",
+  skills: ["ReactJS", "JavaScript", "HTML", "CSS", "Git"],
+  cvFile: "/assets/cv/nguyenvana_cv.pdf",
+};

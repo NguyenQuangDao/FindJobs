@@ -3,6 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./style/index.css";
 
+import Lenis from "lenis";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -10,29 +11,28 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Login from "./components/Auth/Login/Login";
-import Layout from "./Layout";
-
+import Register from "./components/Auth/Register/Register";
 import Brands from "./components/Brands/Brands";
 import Categories from "./components/Categories/Categories";
 import Cta from "./components/Cta/Cta";
 import FeaturedJobs from "./components/FeaturedJobs/FeaturedJobs";
 import Home from "./components/Home/Home";
+import JobListMain from "./components/JobListings/JobListMain";
 import LatestJobs from "./components/LatestJobs/LatestJobs";
 import PageNotFount from "./components/PageNotFount/PageNotFount";
+import Profile from "./components/Profile/Profile";
+import Layout from "./Layout";
 // smooth scrolling
-import AddCv from "./components/AddCv/AddCV";
-import Register from "./components/Auth/Register/Register";
-import JobListMain from "./components/JobListings/JobListMain";
 // Initialize Lenis
-// const lenis = new Lenis();
+const lenis = new Lenis();
 
-// // Use requestAnimationFrame to continuously update the scroll
-// function raf(time) {
-//   lenis.raf(time);
-//   requestAnimationFrame(raf);
-// }
+// Use requestAnimationFrame to continuously update the scroll
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
 
-// requestAnimationFrame(raf);
+requestAnimationFrame(raf);
 
 export const MainLayout = () => (
   <>
@@ -52,15 +52,19 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/jobListMain" element={<JobListMain />} />
-      <Route path="/addCv" element={<AddCv />} />
+      <Route path="/profile" element={<Profile />} />
 
       <Route path="*" element={<PageNotFount />} />
     </Route>
   )
 );
 
+import { CommonMessageProvider } from "./shared/CommonMessage";
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <CommonMessageProvider>
+      <RouterProvider router={router} />
+    </CommonMessageProvider>
   </StrictMode>
 );

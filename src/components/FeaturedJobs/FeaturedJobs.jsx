@@ -18,13 +18,13 @@ const FeaturedJobs = () => {
           />
           {/* lists  */}
           <div className="grid w-full gap-10 mt-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {jobPosts.map((joblist) => (
+            {jobPosts.map((joblist, index) => (
               <Link
                 to={`job-details/${joblist.title
                   .toLowerCase()
                   .split(" ")
                   .join("-")}`}
-                key={joblist.company}
+                key={`${joblist.company}${index}`}
                 className="relative transition duration-300 bg-white border cursor-pointer hover:border-primaryColor hover:shadow-xl hover:shadow-gray-100 border-gray-400/40 rounded-xl p-7 "
               >
                 <div className="flex items-start justify-between gap-2 ">

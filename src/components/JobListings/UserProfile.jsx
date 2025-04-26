@@ -2,9 +2,11 @@ import { faGithub, faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../../style/JobListings.css";
 
 function UserProfile() {
+  const navigate = useNavigate();
   return (
     <div className={"profileContainer"}>
       <section className={"profileCard"}>
@@ -15,7 +17,14 @@ function UserProfile() {
         />
         <h2 className={"profileName"}>Nguyễn Quang Đạo</h2>
         <p className={"profileTitle"}>FullStack Developer</p>
-        <button className={"editProfileButton"}>Chỉnh sửa hồ sơ</button>
+        <button
+          className={"editProfileButton"}
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
+          Chỉnh sửa hồ sơ
+        </button>
       </section>
 
       <section className={"profileDetails"}>

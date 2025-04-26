@@ -7,13 +7,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Rate } from "antd";
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../style/JobListings.css";
 // Then import whatever icons you plan to use:
 function JobDetail({ job }) {
   const textRef = useRef(null);
   const [feedback, setFeedback] = useState("");
-  const navigate = useNavigate();
+ 
   const handleCopy = async () => {
     try {
       const text = textRef.current.innerText;
@@ -176,9 +175,7 @@ function JobDetail({ job }) {
         </div>
         <button
           className={"proposalButton"}
-          onClick={() => {
-            navigate("/addCv");
-          }}
+          
         >
           Ứng tuyển ngay
         </button>
