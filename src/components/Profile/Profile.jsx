@@ -6,12 +6,13 @@ import {
 import { Button, Input, Select, Space, Tooltip, Upload } from "antd";
 import React, { useRef, useState } from "react";
 import { profile } from "../../Data/Data";
+import { useCommonMessage } from "../../shared/CommonMessage";
 import "../../style/Profile.css";
+import UploadIamge from "../../shared/UploadIamge";
 const Profile = () => {
+  const { alertError, alertSuccess } = useCommonMessage();
   const [form, setForm] = useState(profile);
   const [preview, setPreview] = useState(null);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -22,6 +23,22 @@ const Profile = () => {
       }
     } else {
       setForm({ ...form, [name]: value });
+    }
+  };
+
+  // Thêm hàm xử lý khi avatar thay đổi từ component UploadIamge
+  const handleAvatarChange = (fileInfo) => {
+    if (fileInfo && fileInfo.originFileObj) {
+      // Cập nhật avatar trong form
+      setForm({ ...form, avatar: fileInfo.originFileObj });
+
+      // Tạo URL preview từ file
+      const previewUrl = URL.createObjectURL(fileInfo.originFileObj);
+      setPreview(previewUrl);
+    } else {
+      // Nếu xóa ảnh
+      setForm({ ...form, avatar: null });
+      setPreview(null);
     }
   };
 
@@ -72,7 +89,9 @@ const Profile = () => {
               value: skill,
             }));
             // Nếu không có skill nào trùng với query, thêm query vào đầu danh sách
-            if (!data.some((skill) => skill.toLowerCase() === query.toLowerCase())) {
+            if (
+              !data.some((skill) => skill.toLowerCase() === query.toLowerCase())
+            ) {
               options.unshift({ label: query, value: query });
             }
           } else {
@@ -87,34 +106,34 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
+    // setError(""); // Không cần nữa
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const phoneRegex = /^(0|\+84)(\d{9})$/;
     if (!emailRegex.test(form.email)) {
-      setError("Email không hợp lệ!");
+      alertError("Email không hợp lệ!");
       return;
     }
     if (!phoneRegex.test(form.phone)) {
-      setError("Số điện thoại không hợp lệ!");
+      alertError("Số điện thoại không hợp lệ!");
       return;
     }
     if (!form.dob) {
-      setError("Vui lòng nhập ngày sinh!");
+      alertError("Vui lòng nhập ngày sinh!");
       return;
     }
     if (!form.gender) {
-      setError("Vui lòng chọn giới tính!");
+      alertError("Vui lòng chọn giới tính!");
       return;
     }
     if (!form.address) {
-      setError("Vui lòng nhập địa chỉ!");
+      alertError("Vui lòng nhập địa chỉ!");
       return;
     }
     if (!form.education) {
-      setError("Vui lòng nhập học vấn!");
+      alertError("Vui lòng nhập học vấn!");
       return;
     }
-    setSuccess(true);
+    alertSuccess("Gửi CV thành công!");
     // TODO: Gửi dữ liệu lên server
   };
 
@@ -142,21 +161,6 @@ const Profile = () => {
           onSubmit={handleSubmit}
           style={{ display: "flex", flexDirection: "column", gap: 22 }}
         >
-          {error && (
-            <div
-              style={{
-                color: "#d32f2f",
-                background: "#fff0f0",
-                borderRadius: 6,
-                padding: "8px 12px",
-                marginBottom: 8,
-                textAlign: "center",
-                fontWeight: 500,
-              }}
-            >
-              {error}
-            </div>
-          )}
           <div
             style={{
               display: "flex",
@@ -175,52 +179,28 @@ const Profile = () => {
                 gap: 10,
               }}
             >
-              <label htmlFor="avatar" style={{ cursor: "pointer" }}>
-                <div
-                  style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: "50%",
-                    background: "#f5f5f5",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    boxShadow: "0 1px 6px #e0e0e0",
-                  }}
-                >
-                  {preview ? (
-                    <img
-                      src={preview}
-                      alt="avatar"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  ) : (
-                    <span style={{ color: "#bbb", fontSize: 36 }}>+</span>
-                  )}
-                </div>
-              </label>
-              <input
-                type="file"
-                id="avatar"
-                name="avatar"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleChange}
+              <UploadIamge
+                value={
+                  form.avatar
+                    ? {
+                        uid: "-1",
+                        status: "done",
+                        url: preview,
+                        originFileObj: form.avatar,
+                      }
+                    : null
+                }
+                onChange={handleAvatarChange}
               />
               <span style={{ fontSize: 13, color: "#888" }}>Ảnh đại diện</span>
             </div>
             <div
               style={{
-                flex: 3,
+                flex: 4,
                 minWidth: 260,
                 display: "flex",
                 flexDirection: "column",
-                gap: 14,
+                gap: 24,
               }}
             >
               <div style={{ display: "flex", gap: 14 }}>
@@ -467,86 +447,333 @@ const Profile = () => {
             Hoàn thành
           </button>
         </form>
-        {success && (
-          <div
+        
+        <div style={{ marginTop: 36 }}>
+          <h3
             style={{
-              marginTop: 18,
-              color: "#239852",
-              textAlign: "center",
+              fontSize: 20,
+              marginBottom: 16,
               fontWeight: 600,
-              fontSize: 17,
+              color: "#333",
+              position: "relative",
+              paddingLeft: 15,
             }}
           >
-            Gửi CV thành công!
-          </div>
-        )}
-        <div style={{ marginTop: 36 }}>
-          <h3 style={{ fontSize: 18, marginBottom: 12, fontWeight: 600 }}>
+            <span
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 4,
+                backgroundColor: "#1890ff",
+                borderRadius: 2,
+                marginRight: 10,
+              }}
+            ></span>
             Xem trước thông tin
           </h3>
           <div
             style={{
-              background: "#fafafa",
-              borderRadius: 8,
-              padding: 20,
+              background: "#ffffff",
+              borderRadius: 12,
+              padding: 24,
               fontSize: 15,
-              boxShadow: "0 1px 6px #eee",
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)",
+              border: "1px solid #f0f0f0",
+              transition: "all 0.3s ease",
             }}
           >
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: 18,
-                marginBottom: 12,
+                alignItems: "flex-start",
+                gap: 24,
+                marginBottom: 20,
               }}
             >
-              {preview && (
+              {preview ? (
                 <img
                   src={preview}
                   alt="avatar"
-                  style={{ width: 54, height: 54, borderRadius: "50%" }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: "3px solid #f0f0f0",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                  }}
                 />
+              ) : form.avatar ? (
+                <UploadIamge
+                  showUploadList={{ showRemoveIcon: false }}
+                  value={
+                    form.avatar
+                      ? {
+                          uid: "-1",
+                          status: "done",
+                          url: preview,
+                          originFileObj: form.avatar,
+                        }
+                      : null
+                  }
+                />
+              ) : (
+                <div
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: "50%",
+                    background: "#f5f5f5",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#bbb",
+                    fontSize: 24,
+                    border: "3px solid #f0f0f0",
+                  }}
+                >
+                  <span>?</span>
+                </div>
               )}
-              <div>
-                <div style={{ fontWeight: 600, fontSize: 17 }}>{form.name}</div>
-                <div style={{ color: "#888", fontSize: 14 }}>
-                  {form.email} | {form.phone}
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 22,
+                    marginBottom: 8,
+                    color: "#333",
+                  }}
+                >
+                  {form.name || "Chưa có tên"}
                 </div>
-                <div style={{ color: "#888", fontSize: 14 }}>
-                  Ngày sinh: {form.dob} | Giới tính: {form.gender}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                    gap: "8px 16px",
+                  }}
+                >
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 15,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff", fontSize: "24px" }}>
+                      ✉
+                    </span>{" "}
+                    {form.email || "Chưa có email"}
+                  </div>
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 15,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff" }}>☎</span>{" "}
+                    {form.phone || "Chưa có SĐT"}
+                  </div>
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 15,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff" }}>📅</span> Ngày sinh:{" "}
+                    {form.dob || "Chưa có"}
+                  </div>
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 15,
+                      display: "flex",
+                      alignItems: "start",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff" }}>👤</span> Giới tính:{" "}
+                    {form.gender || "Chưa có"}
+                  </div>
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 15,
+                      display: "flex",
+                      alignItems: "start",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff" }}>📍</span> Địa chỉ:{" "}
+                    {form.address || "Chưa có"}
+                  </div>
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 15,
+                      display: "flex",
+                      alignItems: "start",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff" }}>🎓</span> Học vấn:{" "}
+                    {form.education || "Chưa có"}
+                  </div>
                 </div>
-                <div style={{ color: "#888", fontSize: 14 }}>
-                  Địa chỉ: {form.address}
-                </div>
-                <div style={{ color: "#888", fontSize: 14 }}>
-                  Học vấn: {form.education}
-                </div>
-                {form.social && (
-                  <div style={{ color: "#888", fontSize: 14 }}>
-                    Mạng xã hội:{" "}
-                    <a
-                      href={form.social}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {form.social}
-                    </a>
+                {form.social && form.social.length > 0 && (
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 15,
+                      marginTop: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff" }}>🔗</span> Mạng xã hội:{" "}
+                    {form.social.map((link, index) => (
+                      <a
+                        key={index}
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "#1890ff",
+                          textDecoration: "none",
+                          marginRight: 8,
+                        }}
+                      >
+                        Link {index + 1}
+                      </a>
+                    ))}
                   </div>
                 )}
               </div>
             </div>
-            <div style={{ marginBottom: 6 }}>
-              <b>Kinh nghiệm:</b> {form.experience}
-            </div>
-            <div style={{ marginBottom: 6 }}>
-              <b>Kỹ năng:</b> {form.skills}
-            </div>
-            {form.cvFile && (
-              <div>
-                <b>File CV:</b> {form.cvFile.name}
+            <div
+              style={{
+                marginTop: 16,
+                borderTop: "1px solid #f0f0f0",
+                paddingTop: 16,
+              }}
+            >
+              <div
+                style={{
+                  marginBottom: 12,
+                  backgroundColor: "#f9f9f9",
+                  padding: "12px 16px",
+                  borderRadius: 8,
+                  borderLeft: "3px solid #1890ff",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: 600,
+                    marginBottom: 6,
+                    color: "#333",
+                    fontSize: 16,
+                  }}
+                >
+                  <span style={{ color: "#1890ff", marginRight: 8 }}>💼</span>
+                  Kinh nghiệm
+                </div>
+                <div style={{ color: "#666", lineHeight: 1.5 }}>
+                  {form.experience || "Chưa có thông tin kinh nghiệm"}
+                </div>
               </div>
-            )}
+
+              <div
+                style={{
+                  marginBottom: 12,
+                  backgroundColor: "#f9f9f9",
+                  padding: "12px 16px",
+                  borderRadius: 8,
+                  borderLeft: "3px solid #1890ff",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: 600,
+                    marginBottom: 6,
+                    color: "#333",
+                    fontSize: 16,
+                  }}
+                >
+                  <span style={{ color: "#1890ff", marginRight: 8 }}>🔧</span>
+                  Kỹ năng
+                </div>
+                <div style={{ color: "#666" }}>
+                  {form.skills && form.skills.length > 0 ? (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                      {form.skills.map((skill, index) => (
+                        <span
+                          key={index}
+                          style={{
+                            backgroundColor: "#e6f7ff",
+                            color: "#1890ff",
+                            padding: "4px 10px",
+                            borderRadius: 16,
+                            fontSize: 13,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    "Chưa có thông tin kỹ năng"
+                  )}
+                </div>
+              </div>
+
+              {form.cvFile && (
+                <div
+                  style={{
+                    backgroundColor: "#f9f9f9",
+                    padding: "12px 16px",
+                    borderRadius: 8,
+                    borderLeft: "3px solid #1890ff",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      color: "#333",
+                      fontSize: 16,
+                    }}
+                  >
+                    <span style={{ color: "#1890ff", marginRight: 8 }}>📄</span>
+                    File CV:
+                  </div>
+                  <div
+                    style={{
+                      color: "#1890ff",
+                      backgroundColor: "#e6f7ff",
+                      padding: "4px 12px",
+                      borderRadius: 4,
+                      fontSize: 15,
+                    }}
+                  >
+                    {form.cvFile.name}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
