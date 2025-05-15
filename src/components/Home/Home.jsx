@@ -21,7 +21,6 @@ const Home = () => {
   //   };
   // }, []);
   const [valueFindJob, setValueFindJob] = useState("");
-  console.log(valueFindJob);
 
   return (
     <section className="bg-[#F8F8FD] py-10 pb-0 lg:pt-5 lg:py-0 relative z-10 overflow-x-hidden">
@@ -59,6 +58,7 @@ const Home = () => {
                     type="text"
                     className="w-full pb-2 outline-none text-textDarkColor"
                     placeholder="Tên công việc hoặc Từ khóa"
+                    value={valueFindJob || ''}
                     onChange={(e) => {
                       setValueFindJob(e.target.value);
                     }}
@@ -74,7 +74,7 @@ const Home = () => {
                 <div className="text-textGrayColor">
                   <SlLocationPin size={18} />
                 </div>
-                <p className="mt-1">Địa điểm</p>
+                <p className="mt-1 mb-0">Địa điểm</p>
                 <LocationSelector />
               </div>
             </div>

@@ -10,6 +10,7 @@ const LatestJobs = () => {
             title="Việc làm"
             subTitle="mới nhất"
             ctaName="Xem tất cả"
+            LinkCtaName="jobListMain"
           />
 
           {/* lists  */}

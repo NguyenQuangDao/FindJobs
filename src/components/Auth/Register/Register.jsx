@@ -1,8 +1,9 @@
 import "antd/dist/reset.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 import { useCommonMessage } from "../../../shared/CommonMessage";
 import "../../../style/Auth.css";
 import { handleFocus } from "../../../utils";
@@ -21,8 +22,6 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(form);
-
     e.preventDefault();
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (!emailRegex.test(form.email)) {
@@ -36,7 +35,15 @@ const Register = () => {
       return;
     }
     try {
-      await createUserWithEmailAndPassword(auth, form.email, form.password);
+      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      const user = userCredential.user;
+      // Lưu thông tin vào Firestore
+      await setDoc(doc(db, "profiles", user.uid), {
+        name: form.name,
+        email: form.email,
+        createdAt: new Date(),
+        // Có thể thêm các trường khác nếu muốn
+      });
       alertSuccess("Đăng ký thành công!");
       navigate('/login')
     } catch (err) {

@@ -396,8 +396,8 @@ export const profile = {
   address: "123 Đường Văn Tiến Dũng, Quận Bắc Từ Liêm, TP.Hà Nội",
   education: "Đại học Bách Khoa Hà Nội",
   social: [
-    "https://www.linkedin.com/in/nguyenquangdao",
-    "https://facebook.com/nguyenquangdao",
+    { name: "LinkedIn", link: "https://www.linkedin.com/in/nguyenquangdao" },
+    {name: "Facebook", link: "https://facebook.com/nguyenquangdao"},
   ],
   avatar: "/assets/images/avatar/avatar1.jpg",
   experience:

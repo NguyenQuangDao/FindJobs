@@ -1,6 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../../AppProvider/AppProvider";
+import { useCommonMessage } from "../../../shared/CommonMessage";
 import "../../../style/Auth.css";
+import { handleFocus } from "../../../utils";
+
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { alertSuccess, alertError } = useCommonMessage();
+  const { login } = useAppContext();
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (username === "") {
+      handleFocus("username");
+      return;
+    }
+    if (password === "") {
+      handleFocus("password");
+      return;
+    }
+    try {
+      await login(username, password);
+      alertSuccess("Đăng nhập thành công!");
+      navigate("/");
+    } catch (error) {
+      alertError("Đăng nhập thất bại!");
+      console.log("Đăng nhập thất bại: " + error.message);
+    }
+  };
+
   return (
     <div className="content">
       <div className="container">
@@ -24,13 +54,15 @@ const Login = () => {
                     những công việc phù hợp nhất.
                   </p>
                 </div>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="form-group first">
                     <input
                       type="text"
                       className="form-control"
                       placeholder="Tài khoản"
                       id="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                     />
                   </div>
                   <div className="form-group last mb-4 mt-2">
@@ -39,6 +71,8 @@ const Login = () => {
                       className="form-control"
                       id="password"
                       placeholder="Mật khẩu"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                   <div className="d-flex align-items-center">

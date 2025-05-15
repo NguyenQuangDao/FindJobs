@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { IoClose, IoMenuSharp } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-
+import { useAppContext } from "../../AppProvider/AppProvider";
 const Header = () => {
+  const { user } = useAppContext();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
@@ -12,7 +13,7 @@ const Header = () => {
     const { name } = e.target;
     navigate(`/${name}`);
   };
-
+  
   return (
     <header className="w-full bg-[#F8F8FD]">
       <nav className="container flex items-center justify-between py-4">
@@ -34,7 +35,7 @@ const Header = () => {
           {/* Desktop Navigation Links */}
           <ul className="items-center hidden mt-1 md:flex">
             <li className="h-full leading-8">
-              <NavLink to="/find-jobs" className="nav-link">
+              <NavLink to="/jobListMain" className="nav-link">
                 Tìm việc làm
               </NavLink>
             </li>
@@ -57,7 +58,7 @@ const Header = () => {
             name="login"
             onClick={handleTabHeader}
           >
-            Đăng nhập
+            {user ? "Đăng xuất" : "Đăng nhập"}
           </button>
           <button
             className={`flex-shrink-0 ${

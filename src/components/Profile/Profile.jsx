@@ -3,16 +3,39 @@ import {
   PlusOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+
 import { Button, Input, Select, Space, Tooltip, Upload } from "antd";
-import React, { useRef, useState } from "react";
-import { profile } from "../../Data/Data";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import React, { useEffect, useRef, useState } from "react";
+import { auth, db, storage } from "../../firebase";
 import { useCommonMessage } from "../../shared/CommonMessage";
-import "../../style/Profile.css";
 import UploadIamge from "../../shared/UploadIamge";
+import "../../style/Profile.css";
+import { socialOptions } from "../../utils";
 const Profile = () => {
+  const user = auth.currentUser;
+
   const { alertError, alertSuccess } = useCommonMessage();
-  const [form, setForm] = useState(profile);
+  const [form, setForm] = useState({});
   const [preview, setPreview] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const docRef = doc(db, "profiles", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setForm(docSnap.data());
+          setPreview(docSnap.data().avatar);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+  console.log(form);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -27,29 +50,29 @@ const Profile = () => {
   };
 
   // Thêm hàm xử lý khi avatar thay đổi từ component UploadIamge
-  const handleAvatarChange = (fileInfo) => {
-    if (fileInfo && fileInfo.originFileObj) {
-      // Cập nhật avatar trong form
-      setForm({ ...form, avatar: fileInfo.originFileObj });
+  // const handleAvatarChange = (fileInfo) => {
+  //   if (fileInfo && fileInfo.originFileObj) {
+  //     // Cập nhật avatar trong form
+  //     setForm({ ...form, avatar: fileInfo.originFileObj });
 
-      // Tạo URL preview từ file
-      const previewUrl = URL.createObjectURL(fileInfo.originFileObj);
-      setPreview(previewUrl);
-    } else {
-      // Nếu xóa ảnh
-      setForm({ ...form, avatar: null });
-      setPreview(null);
-    }
-  };
+  //     // Tạo URL preview từ file
+  //     const previewUrl = URL.createObjectURL(fileInfo.originFileObj);
+  //     setPreview(previewUrl);
+  //   } else {
+  //     // Nếu xóa ảnh
+  //     setForm({ ...form, avatar: null });
+  //     setPreview(null);
+  //   }
+  // };
 
-  const handleSocialChange = (index, value) => {
+  const handleSocialChange = (index, field, value) => {
     const newSocial = [...form.social];
-    newSocial[index] = value;
+    newSocial[index][field] = value;
     setForm({ ...form, social: newSocial });
   };
 
   const handleAddSocial = () => {
-    setForm({ ...form, social: [...form.social, ""] });
+    setForm({ ...form, social: [...form.social, { name: "", link: "" }] });
   };
 
   const handleRemoveSocial = (index) => {
@@ -84,7 +107,7 @@ const Profile = () => {
         .then((data) => {
           let options = [];
           if (Array.isArray(data) && data.length > 0) {
-            options = data.map((skill) => ({
+            options = data?.map((skill) => ({
               label: skill,
               value: skill,
             }));
@@ -104,11 +127,19 @@ const Profile = () => {
     }, 300);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // setError(""); // Không cần nữa
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const phoneRegex = /^(0|\+84)(\d{9})$/;
+
+    if (!user) {
+      alertError(
+        "Người dùng chưa đăng nhập. Không thể thực hiện hành động này!"
+      );
+      return;
+    }
+    const userId = user.uid;
+
     if (!emailRegex.test(form.email)) {
       alertError("Email không hợp lệ!");
       return;
@@ -133,8 +164,81 @@ const Profile = () => {
       alertError("Vui lòng nhập học vấn!");
       return;
     }
-    alertSuccess("Gửi CV thành công!");
-    // TODO: Gửi dữ liệu lên server
+
+    try {
+      let avatarUrl = form.avatar; // Giữ URL hiện tại hoặc null nếu chưa có
+      const avatarFileToUpload = form.avatar;
+
+      if (avatarFileToUpload && typeof avatarFileToUpload !== "string") {
+        // Nếu là File object, tức là file mới/thay đổi
+        if (!(avatarFileToUpload instanceof File)) {
+          alertError("Tệp avatar không hợp lệ. Vui lòng chọn lại.");
+          console.error(
+            "Đối tượng tệp avatar không hợp lệ:",
+            avatarFileToUpload
+          );
+          return;
+        }
+        const avatarRef = ref(
+          storage,
+          `avatars/${userId}/${avatarFileToUpload.name}_${Date.now()}`
+        );
+        await uploadBytes(avatarRef, avatarFileToUpload);
+        avatarUrl = await getDownloadURL(avatarRef);
+        console.log("Avatar đã upload, URL:", avatarUrl);
+      } else {
+        console.log(
+          "Avatar là URL đã có hoặc null, không upload mới:",
+          avatarFileToUpload
+        );
+      }
+
+      let cvUrl = form.cvFile; // Giữ URL hiện tại hoặc null nếu chưa có
+      const cvFileToUpload = form.cvFile;
+
+      if (cvFileToUpload && typeof cvFileToUpload !== "string") {
+        // Nếu là File object
+        console.log("Chuẩn bị upload CV:", cvFileToUpload);
+        if (!(cvFileToUpload instanceof File)) {
+          alertError("Tệp CV không hợp lệ. Vui lòng chọn lại.");
+          console.error("Đối tượng tệp CV không hợp lệ:", cvFileToUpload);
+          return;
+        }
+        const cvRef = ref(
+          storage,
+          `cvs/${userId}/${cvFileToUpload.name}_${Date.now()}`
+        );
+        await uploadBytes(cvRef, cvFileToUpload);
+        cvUrl = await getDownloadURL(cvRef);
+        console.log("CV đã upload, URL:", cvUrl);
+      } else {
+        console.log(
+          "CV là URL đã có hoặc null, không upload mới:",
+          cvFileToUpload
+        );
+      }
+
+      const docRef = doc(db, "profiles", userId);
+      const docSnap = await getDoc(docRef);
+      const profileDataToSave = {
+        ...form,
+        avatar: avatarUrl || null, // Lưu null nếu không có URL
+        cvFile: cvUrl || null, // Lưu null nếu không có URL
+      };
+
+      if (docSnap.exists()) {
+        profileDataToSave.updatedAt = new Date();
+        await updateDoc(docRef, profileDataToSave);
+        alertSuccess("Hồ sơ đã được cập nhật thành công!");
+      } else {
+        profileDataToSave.createdAt = new Date();
+        await setDoc(docRef, profileDataToSave);
+        alertSuccess("Hồ sơ đã được tạo thành công!");
+      }
+    } catch (error) {
+      console.error("Lỗi chi tiết khi gửi dữ liệu:", error); // Log toàn bộ đối tượng lỗi
+      alertError("Có lỗi khi gửi dữ liệu: " + error.message + ".");
+    }
   };
 
   return (
@@ -154,8 +258,7 @@ const Profile = () => {
             fontSize: 28,
           }}
         >
-          {" "}
-          Chỉnh sửa hồ sơ của bạn
+          Chỉnh sửa thông tin cá nhân
         </h2>
         <form
           onSubmit={handleSubmit}
@@ -179,18 +282,42 @@ const Profile = () => {
                 gap: 10,
               }}
             >
-              <UploadIamge
-                value={
-                  form.avatar
-                    ? {
-                        uid: "-1",
-                        status: "done",
-                        url: preview,
-                        originFileObj: form.avatar,
-                      }
-                    : null
-                }
-                onChange={handleAvatarChange}
+              <label htmlFor="avatar" style={{ cursor: "pointer" }}>
+                <div
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: "50%",
+                    background: "#f5f5f5",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                    boxShadow: "0 1px 6px #e0e0e0",
+                  }}
+                >
+                  {preview ? (
+                    <img
+                      src={preview}
+                      alt="avatar"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <span style={{ color: "#bbb", fontSize: 36 }}>+</span>
+                  )}
+                </div>
+              </label>
+              <input
+                type="file"
+                id="avatar"
+                name="avatar"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleChange}
               />
               <span style={{ fontSize: 13, color: "#888" }}>Ảnh đại diện</span>
             </div>
@@ -349,26 +476,44 @@ const Profile = () => {
                   Liên kết mạng xã hội (LinkedIn, Facebook...)
                 </label>
                 <Space direction="vertical" className="group_inputSocial">
-                  {form.social.map((link, idx) => (
+                  {form?.social?.map((item, idx) => (
                     <Space
                       key={idx}
                       align="baseline"
                       className="group_inputSocial_item"
+                      style={{ width: "100%" }}
                     >
-                      <Tooltip title={link}>
+                      <Select
+                        className="filterTab inputSocial"
+                        style={{
+                          borderRadius: 7,
+                          width: 140,
+                          padding: "0px",
+                          textAlign: "left",
+                        }}
+                        placeholder="Chọn MXH"
+                        value={item.name}
+                        options={socialOptions}
+                        onChange={(value) =>
+                          handleSocialChange(idx, "name", value)
+                        }
+                        showSearch
+                        optionFilterProp="value"
+                      />
+                      <Tooltip title={item.link}>
                         <Input
-                          className="filterTab inputSocial"
+                          className="inputSocial"
                           style={{
                             border: "1px solid #eee",
                             borderRadius: 7,
                             width: "100%",
                           }}
                           type="text"
-                          name={`social-${idx}`}
-                          placeholder="Nhập liên kết mạng xã hội"
-                          value={link}
+                          name={`social-link-${idx}`}
+                          placeholder="Nhập liên kết"
+                          value={item.link}
                           onChange={(e) =>
-                            handleSocialChange(idx, e.target.value)
+                            handleSocialChange(idx, "link", e.target.value)
                           }
                         />
                       </Tooltip>
@@ -415,7 +560,7 @@ const Profile = () => {
                 <Select
                   mode="multiple"
                   placeholder="Chọn kỹ năng"
-                  value={form.skills ? form.skills.map((s) => s.trim()) : []}
+                  value={form?.skills ? form?.skills?.map((s) => s.trim()) : []}
                   onChange={(values) => setForm({ ...form, skills: values })}
                   style={{ width: "100%" }}
                   options={skillOptions}
@@ -429,13 +574,49 @@ const Profile = () => {
                   Đính kèm file CV (PDF, DOCX)
                 </label>
                 <Upload
-                  onChange={handleChange}
-                  type="file"
-                  name="cvFile"
+                  beforeUpload={() => false}
+                  showUploadList={false}
+                  maxCount={1}
                   accept=".pdf,.doc,.docx"
+                  customRequest={() => {}}
+                  onChange={(info) => {
+                    if (info.fileList.length > 0) {
+                      setForm({
+                        ...form,
+                        cvFile: info.fileList[0].originFileObj,
+                      });
+                    }
+                  }}
                 >
                   <Button icon={<UploadOutlined />}>Tải lên file CV</Button>
                 </Upload>
+                {form.cvFile && (
+                  <div
+                    style={{
+                      marginTop: 8,
+                      color: "#1890ff",
+                      fontSize: 14,
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span>
+                      Đã chọn:{" "}
+                      {typeof form.cvFile === "string"
+                        ? form.cvFile.split("/").pop()
+                        : form.cvFile.name}
+                    </span>
+                    <Button
+                      size="small"
+                      type="text"
+                      danger
+                      style={{ marginLeft: 8 }}
+                      onClick={() => setForm({ ...form, cvFile: null })}
+                    >
+                      X
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -447,7 +628,7 @@ const Profile = () => {
             Hoàn thành
           </button>
         </form>
-        
+
         <div style={{ marginTop: 36 }}>
           <h3
             style={{
@@ -642,7 +823,7 @@ const Profile = () => {
                     }}
                   >
                     <span style={{ color: "#1890ff" }}>🔗</span> Mạng xã hội:{" "}
-                    {form.social.map((link, index) => (
+                    {form?.social?.map((link, index) => (
                       <a
                         key={index}
                         href={link}
@@ -716,7 +897,7 @@ const Profile = () => {
                 <div style={{ color: "#666" }}>
                   {form.skills && form.skills.length > 0 ? (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {form.skills.map((skill, index) => (
+                      {form?.skills?.map((skill, index) => (
                         <span
                           key={index}
                           style={{
@@ -755,6 +936,7 @@ const Profile = () => {
                       fontWeight: 600,
                       color: "#333",
                       fontSize: 16,
+                      width: 130,
                     }}
                   >
                     <span style={{ color: "#1890ff", marginRight: 8 }}>📄</span>
@@ -769,7 +951,9 @@ const Profile = () => {
                       fontSize: 15,
                     }}
                   >
-                    {form.cvFile.name}
+                    {typeof form.cvFile === "string"
+                      ? form.cvFile.split("/").pop()
+                      : form.cvFile.name}
                   </div>
                 </div>
               )}

@@ -53,18 +53,22 @@ const router = createBrowserRouter(
       <Route path="/register" element={<Register />} />
       <Route path="/jobListMain" element={<JobListMain />} />
       <Route path="/profile" element={<Profile />} />
-
+      <Route path="/jobForm" element={<JobForm />} />
       <Route path="*" element={<PageNotFount />} />
     </Route>
   )
 );
 
+import { AppProvider } from "./AppProvider/AppProvider";
+import JobForm from "./components/JobForm/JobForm";
 import { CommonMessageProvider } from "./shared/CommonMessage";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <CommonMessageProvider>
-      <RouterProvider router={router} />
+      <AppProvider>
+        <RouterProvider router={router} />
+      </AppProvider>
     </CommonMessageProvider>
   </StrictMode>
 );

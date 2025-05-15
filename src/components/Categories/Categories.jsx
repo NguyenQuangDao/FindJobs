@@ -14,6 +14,7 @@ const Categories = () => {
           title="Khám phá theo"
           subTitle="danh mục"
           ctaName="Xem tất cả"
+          LinkCtaName="jobListMain"
         />
 
         <div className="w-full mt-10">

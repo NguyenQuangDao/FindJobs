@@ -1,0 +1,18 @@
+@keyframes arrowBounce {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.back-arrow {
+  animation: arrowBounce 2s infinite;
+  cursor: pointer;
+  font-size: 24px;
+  color: #1890ff;
+  transition: all 0.3s ease;
+}
+
+.back-arrow:hover {
+  color: #40a9ff;
+  animation: none;
+}
