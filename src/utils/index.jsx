@@ -89,3 +89,14 @@ export const isValidURL = (str) => {
     
   }
 };
+
+
+export const categoryOptions = [
+  { label: "Design", value: "design" },
+  { label: "Sales", value: "sales" },
+  { label: "Finance", value: "finance" },
+  { label: "Technology", value: "technology" },
+  { label: "Engineering", value: "engineering" },
+  { label: "Bussiness", value: "bussiness" },
+  { label: "Human Resources", value: "human_resources" }
+];

@@ -155,7 +155,7 @@
   font-weight: 400;
 }
 .filtersSection .filterTabs:first-child {
-  width: 72%;
+  width: 100%;
 }
 @media (width<=991px) {
   .filtersSection {
@@ -201,7 +201,7 @@
 
 /* Job List Container */
 .jobListContainer {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 @media (width<=991px) {
@@ -237,6 +237,7 @@
   padding-right: 10px;
   border-radius: 10px;
   pointer-events: all;
+  gap: 15px;
 }
 
 /* Tùy chọn: Tùy chỉnh thanh cuộn để trông đẹp hơn */
@@ -310,6 +311,7 @@
   align-items: stretch;
   display: flex;
   cursor: pointer;
+  gap: 5px;
 }
 
 .jobTitle {
@@ -374,6 +376,7 @@
   font-weight: 500;
   display: flex;
   flex-wrap: wrap;
+  min-height: 56px;
 }
 
 .tag {
@@ -382,6 +385,7 @@
   padding: 5px 9px;
   font-size: 10px;
   width: max-content;
+  height: max-content;
 }
 
 .ratingContainer {
@@ -389,7 +393,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 2px;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 
 .ratingContainer .jobCardrecruitment {
@@ -652,7 +656,7 @@
   gap: 11px;
   margin-top: 12px;
   font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   display: flex;
 }
@@ -713,14 +717,14 @@
 
 .successCount {
   color: #414141;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   margin: 0;
 }
 
 .spentAmount {
   color: #3f3f3f;
-  font-size: 12px;
+  font-size: 13px;
   margin: 0;
   font-weight: bold;
 }
@@ -739,6 +743,7 @@
   margin-top: 34px;
   font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
   display: flex;
+  flex-direction: column;
 }
 
 .jobUrl {
@@ -818,7 +823,7 @@
   font-weight: 600;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
 @media (width<=991px) {
@@ -950,7 +955,6 @@
   background-color: #000;
   border-radius: 5px;
   align-self: stretch;
-  margin-top: 20px;
   padding: 9px 0;
   font-size: 11px;
   border: none;
@@ -989,3 +993,15 @@
   display: flex;
 }
 
+.ant-card {
+  height: 100% !important;
+  margin-bottom: 16px;
+}
+
+.JobListAll .ant-card{
+  margin-bottom: 0;
+}
+
+.company-info-section .companyName{
+  margin: auto 0;
+}

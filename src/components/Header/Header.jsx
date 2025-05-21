@@ -3,7 +3,8 @@ import { IoClose, IoMenuSharp } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider/AppProvider";
 const Header = () => {
-  const { user } = useAppContext();
+  const { user, logout } = useAppContext();
+
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
@@ -13,7 +14,12 @@ const Header = () => {
     const { name } = e.target;
     navigate(`/${name}`);
   };
-  
+  const handleLogout = (e) => {
+    const { name } = e.target;
+    logout();
+    navigate(`/${name}`);
+  };
+
   return (
     <header className="w-full bg-[#F8F8FD]">
       <nav className="container flex items-center justify-between py-4">
@@ -56,7 +62,7 @@ const Header = () => {
                 : "text-primaryColor font-semibold px-4 rounded-md hover:bg-primaryColor/10 py-[10px] transition duration-300 text-center"
             } `}
             name="login"
-            onClick={handleTabHeader}
+            onClick={user ? handleLogout : handleTabHeader}
           >
             {user ? "Đăng xuất" : "Đăng nhập"}
           </button>

@@ -1,58 +1,119 @@
-import { Rate, Tooltip } from "antd";
+import { Card, Rate, Tooltip, Tag } from "antd";
 import React from "react";
 import "../../style/JobListings.css";
-function JobCard({ job, onClick }) {
+const JobCard = ({ job, style, onClick }) => {
   return (
-    <article className={"jobCard"}>
-      <div className={"jobCardHeader"}>
-        <div className={"jobCardCompany"}>
-          <img
-            src={job?.companyLogo}
-            className={"companyLogo"}
-            alt="Company logo"
-          />
+    <Card
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        ...style,
+      }}
+      styles={{ body: { flex: 1 } }}
+    >
+      {/* Phần thông tin công ty */}
+      <div className="company-info-section">
+        <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
+          <div>
+            <img
+              src={job?.companyAvatar}
+              className={"companyLogo"}
+              alt="Company logo"
+            />
+          </div>
+          <div className={"companyName"}>{job?.companyName}</div>
+        </div>
+        <div
+          className={"jobCardInfo"}
+          onClick={() => {
+            onClick(job);
+          }}
+        >
+          <div style={{ fontSize: "14px" }}>
+            Mức lương:{" "}
+            <span
+              style={{ fontWeight: "600", color: "#333", fontSize: "12px" }}
+            >
+              {job?.minSalary} ~ {job?.maxSalary} {job?.currency}
+            </span>
+          </div>
+          <h3 className={"jobTitle"}>{job?.jobTitle}</h3>
+          <p className={"jobDescription"}>{job?.overview}</p>
+        </div>
+      </div>
+
+      {/* Phần tags */}
+      <div style={{ margin: "12px 0" }}>
+        <Tooltip
+          title={job.tags?.join(", ")}
+          styles={{ root: { maxWidth: 400 } }}
+        >
           <div
-            className={"jobCardInfo"}
-            onClick={() => {
-              onClick(job);
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              lineHeight: 1.5,
             }}
           >
-            <h3 className={"jobTitle"}>{job?.title}</h3>
-            <p className={"jobDescription"}>{job?.description}</p>
-          </div>
-        </div>
-        <img
-          src={"assets/icon/bookmark.png"}
-          className={"bookmarkIcon"}
-          alt="Bookmark"
-        />
-      </div>
-      <div className={"jobCardTags"}>
-        <div className={"tagContainer"}>
-          <div className={"tagGroup"}>
-            {job?.skills.map((skill, index) => (
-              <span key={index} className={"tag"}>
-                {skill}
-              </span>
+            {job.tags?.map((tag, index) => (
+              <Tag key={index} style={{ margin: "2px" }}>
+                {tag}
+              </Tag>
             ))}
           </div>
-          <Tooltip title={job?.rating.star + " ★"} placement="left">
-            <div className={"ratingContainer"}>
-              <Rate
-                disabled
-                allowHalf
-                value={job?.rating.star}
-                style={{ fontSize: "12px" }}
-              />
-              <div className="jobCardrecruitment">
-                <p>Tuyển dụng</p>: {job?.proposals} người
-              </div>
+        </Tooltip>
+      </div>
+
+      {/* Phần thông tin chi tiết */}
+      <div className="job-details-section">
+        <div className={"jobCardTags"}>
+          <div className={"tagContainer"}>
+            <div
+              className={"tagGroup"}
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "4px",
+                maxHeight: "56px",
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              {job?.skills.slice(0, 7).map((skill, index) => (
+                <span key={index} className={"tag"}>
+                  {skill}
+                </span>
+              ))}
+              {job?.skills.length > 7 && (
+                <Tooltip title={job?.skills.join(", ")}>
+                  <span className={"tag"}>+{job?.skills.length - 7}</span>
+                </Tooltip>
+              )}
             </div>
-          </Tooltip>
+            <Tooltip
+              title={job?.rating ? job.rating.star + " ★" : "Chưa có đánh giá"}
+              placement="left"
+            >
+              <div className={"ratingContainer"}>
+                <Rate
+                  disabled
+                  allowHalf
+                  value={job?.rating ? job.rating.star : 0}
+                  style={{ fontSize: "12px" }}
+                />
+                <div className="jobCardrecruitment">
+                  <div>Tuyển dụng</div>: {job?.openings} người
+                </div>
+              </div>
+            </Tooltip>
+          </div>
         </div>
       </div>
-    </article>
+    </Card>
   );
-}
+};
 
 export default JobCard;

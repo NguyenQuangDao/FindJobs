@@ -1,7 +1,13 @@
 @keyframes arrowBounce {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .back-arrow {
@@ -15,4 +21,15 @@
 .back-arrow:hover {
   color: #40a9ff;
   animation: none;
+}
+
+.LocationSelector-Job {
+  gap: 0px;
+}
+.LocationSelector-Job > div {
+  width: 100%;
+}
+.LocationSelector-Job select {
+  width: 100%;
+  margin: 0;
 }

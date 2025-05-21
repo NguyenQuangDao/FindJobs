@@ -2,14 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { API_LOCATION } from "./constants/app";
 
-const LocationSelector = () => {
+const LocationSelector = ({
+  disabledCity = false,
+  disabledDistrict = false,
+  className,
+  onChange,
+  value,
+}) => {
   // State cho danh sách
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   //   const [wards, setWards] = useState([]);
 
   // State cho giá trị đang được chọn (lưu code)
-  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedProvince, setSelectedProvince] = useState(value || "");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   //   const [selectedWard, setSelectedWard] = useState("");
 
@@ -103,6 +109,17 @@ const LocationSelector = () => {
   const handleProvinceChange = (event) => {
     const provinceCode = event.target.value;
     setSelectedProvince(provinceCode);
+
+    // Tìm tên tỉnh/thành phố từ code
+    const selectedProvinceName =
+      provinces.find(
+        (province) => String(province.code) === String(provinceCode)
+      )?.name || "";
+
+    // Kiểm tra onChange trước khi gọi
+    if (onChange && typeof onChange === "function") {
+      onChange(`${selectedProvinceName}`);
+    }
   };
 
   const handleDistrictChange = (event) => {
@@ -116,45 +133,48 @@ const LocationSelector = () => {
   //   };
 
   return (
-    <div className="flex gap-2.5">
+    <div className={`flex gap-2.5 ${className ? className : ""}`}>
       {/* Select Tỉnh/Thành phố */}
-      <div>
-        <select
-          className="mt-[5px] py-2 px-[10px] border border-gray-300 rounded-[5px] w-max cursor-pointer"
-          id="province"
-          value={selectedProvince || ""}
-          onChange={handleProvinceChange}
-          disabled={loadingProvinces}
-        >
-          <option value="">Tỉnh/Thành phố</option>
-          {provinces.map((province) => (
-            <option key={province.code} value={province.code}>
-              {province.name}
-            </option>
-          ))}
-        </select>
-        {loadingProvinces && <span> Đang tải...</span>}
-      </div>
-
+      {!disabledCity && (
+        <div>
+          <select
+            className="mt-[5px] py-2 px-[10px] border border-gray-300 rounded-[5px] w-max cursor-pointer"
+            id="province"
+            value={selectedProvince || ""}
+            onChange={handleProvinceChange}
+            disabled={loadingProvinces}
+          >
+            <option value="">Tỉnh/Thành phố</option>
+            {provinces.map((province) => (
+              <option key={province.code} value={province.code}>
+                {province.name}
+              </option>
+            ))}
+          </select>
+          {loadingProvinces && <span> Đang tải...</span>}
+        </div>
+      )}
       {/* Select Quận/Huyện */}
-      <div>
-        <select
-          className="mt-[5px] py-2 px-[10px] border border-gray-300 rounded-[5px] w-max"
-          id="district"
-          value={selectedDistrict || ""}
-          onChange={handleDistrictChange}
-          // Disable khi chưa chọn Tỉnh/TP hoặc đang load
-          disabled={!selectedProvince || loadingDistricts}
-        >
-          <option value="">Quận/Huyện</option>
-          {districts.map((district) => (
-            <option key={district.code} value={district.code}>
-              {district.name}
-            </option>
-          ))}
-        </select>
-        {loadingDistricts && <span> Đang tải...</span>}
-      </div>
+      {!disabledDistrict && (
+        <div>
+          <select
+            className="mt-[5px] py-2 px-[10px] border border-gray-300 rounded-[5px] w-max"
+            id="district"
+            value={selectedDistrict || ""}
+            onChange={handleDistrictChange}
+            // Disable khi chưa chọn Tỉnh/TP hoặc đang load
+            disabled={!selectedProvince || loadingDistricts}
+          >
+            <option value="">Quận/Huyện</option>
+            {districts.map((district) => (
+              <option key={district.code} value={district.code}>
+                {district.name}
+              </option>
+            ))}
+          </select>
+          {loadingDistricts && <span> Đang tải...</span>}
+        </div>
+      )}
 
       {/* Select Phường/Xã */}
       {/* <div style={{ marginTop: "10px" }}>

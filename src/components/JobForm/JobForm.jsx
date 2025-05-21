@@ -1,25 +1,94 @@
 import { Button, Card, DatePicker, Form, Input, Select, Upload } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useCommonMessage } from "../../shared/CommonMessage";
-import { currencyOptions, isValidURL } from "../../utils";
+import { categoryOptions, currencyOptions, isValidURL } from "../../utils";
 import "../../style/JobForm.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { storage, db, auth } from "../../firebase";
-import { doc, setDoc, serverTimestamp, updateDoc, arrayUnion } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  serverTimestamp,
+  updateDoc,
+  arrayUnion,
+  getDoc,
+} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useAppContext } from "../../AppProvider/AppProvider";
+import LocationSelector from "../../shared/LocationSelector";
 
 const JobForm = () => {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAppContext();
   const { alertSuccess, alertError } = useCommonMessage();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [skillOptions, setSkillOptions] = useState([]);
+  const [workTimeType, setWorkTimeType] = useState("");
+  const debounceRef = useRef();
   const [form] = Form.useForm();
+  const [companyLogo, setCompanyLogo] = useState(null);
+
+  // Lấy thông tin doanh nghiệp từ profile người dùng
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      if (user) {
+        try {
+          const docRef = doc(db, "profiles", user.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const profileData = docSnap.data();
+
+            // Nếu có thông tin doanh nghiệp trong profile, điền vào form
+            if (profileData.accountType === "business") {
+              // Điền thông tin doanh nghiệp
+              form.setFieldsValue({
+                companyName: profileData.businessName || "",
+                companyWebsite: profileData.website || "",
+              });
+
+              // Nếu có avatar/logo doanh nghiệp
+              if (profileData.avatar) {
+                setCompanyLogo(profileData.avatar);
+
+                // Tạo file list giả cho Upload component
+                const fileList = [
+                  {
+                    uid: "-1",
+                    name: "company-logo.png",
+                    status: "done",
+                    url: profileData.avatar,
+                  },
+                ];
+
+                form.setFieldsValue({
+                  companyAvatar: fileList,
+                });
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Lỗi khi lấy thông tin doanh nghiệp:", error);
+        }
+      }
+    };
+
+    fetchCompanyInfo();
+  }, [user, form]);
 
   const onFinish = async (values) => {
+    if (!user) {
+      navigate("/login");
+      alertError("Vui lòng đăng nhập để tiếp tục!");
+      return;
+    }
+    console.log(values);
+
     try {
       setIsSubmitting(true);
 
-      // Upload logo công ty
+      // Upload logo doanh nghiệp
       let logoUrl = "";
       if (values.companyAvatar?.[0]?.originFileObj) {
         const storageRef = ref(
@@ -28,6 +97,9 @@ const JobForm = () => {
         );
         await uploadBytes(storageRef, values.companyAvatar[0].originFileObj);
         logoUrl = await getDownloadURL(storageRef);
+      } else if (companyLogo) {
+        // Sử dụng logo đã có nếu không upload logo mới
+        logoUrl = companyLogo;
       }
 
       // Tạo job document
@@ -52,8 +124,8 @@ const JobForm = () => {
             jobId: docRef.id,
             title: values.jobTitle,
             company: values.companyName,
-            createdAt: new Date() 
-          })
+            createdAt: new Date(),
+          }),
         });
       }
 
@@ -66,9 +138,6 @@ const JobForm = () => {
       setIsSubmitting(false);
     }
   };
-
-  const [skillOptions, setSkillOptions] = useState([]);
-  const debounceRef = useRef();
 
   const fetchSkills = (query) => {
     if (debounceRef.current) {
@@ -141,38 +210,77 @@ const JobForm = () => {
     >
       <Form form={form} layout="vertical" onFinish={onFinish}>
         <Form.Item
-          label="Logo công ty"
           name="companyAvatar"
           valuePropName="fileList"
           getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
+        >
+          {companyLogo ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={companyLogo}
+                alt="Logo doanh nghiệp"
+                style={{
+                  width: "200px",
+                  height: "200px",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+          ) : (
+            <Upload
+              listType="picture"
+              maxCount={1}
+              fileList={form.getFieldValue("companyAvatar") || []}
+              beforeUpload={(file) => {
+                const isImage = file.type.startsWith("image/");
+                if (!isImage) {
+                  alertError("Chỉ được phép tải lên file ảnh!");
+                }
+                return isImage ? false : Upload.LIST_IGNORE;
+              }}
+            >
+              <Button>Chọn ảnh</Button>
+            </Upload>
+          )}
+        </Form.Item>
+        <Form.Item label="Tên doanh nghiệp" name="companyName">
+          {form.getFieldValue("companyName") ? (
+            <div
+              style={{
+                padding: "4px 11px",
+                border: "1px solid #d9d9d9",
+                borderRadius: "2px",
+                backgroundColor: "#f5f5f5",
+              }}
+            >
+              {form.getFieldValue("companyName")}
+            </div>
+          ) : (
+            <Input placeholder="Nhập tên doanh nghiệp" />
+          )}
+        </Form.Item>
+        <Form.Item
+          label="Website doanh nghiệp"
+          name="companyWebsite"
+          initialValue=""
           rules={[
             {
-              required: true,
-              message: "Vui lòng tải lên logo công ty",
+              type: "url",
+              message: "URL không hợp lệ",
+              validator: (_, value) =>
+                value === "" || isValidURL(value)
+                  ? Promise.resolve()
+                  : Promise.reject(),
             },
           ]}
         >
-          <Upload
-            listType="picture"
-            maxCount={1}
-            beforeUpload={(file) => {
-              const isImage = file.type.startsWith("image/");
-              if (!isImage) {
-                alertError("Chỉ được phép tải lên file ảnh!");
-              }
-              // Ngăn không cho Upload tự động gửi lên server
-              return isImage ? false : Upload.LIST_IGNORE;
-            }}
-          >
-            <Button>Chọn ảnh</Button>
-          </Upload>
-        </Form.Item>
-        <Form.Item
-          label="Tên công ty"
-          name="companyName"
-          rules={[{ required: true, message: "Vui lòng nhập tên công ty" }]}
-        >
-          <Input placeholder="Nhập tên công ty" />
+          <Input placeholder="Nhập URL website doanh nghiệp (không bắt buộc)" />
         </Form.Item>
         <Form.Item
           label="Tên công việc"
@@ -180,23 +288,6 @@ const JobForm = () => {
           rules={[{ required: true, message: "Vui lòng nhập tên công việc" }]}
         >
           <Input placeholder="Nhập tên công việc" />
-        </Form.Item>
-        <Form.Item
-          label="Website công ty"
-          name="companyWebsite"
-          initialValue=""
-          rules={[
-            { 
-              type: "url",
-              message: "URL không hợp lệ",
-              validator: (_, value) => 
-                value === '' || isValidURL(value) 
-                  ? Promise.resolve() 
-                  : Promise.reject()
-            }
-          ]}
-        >
-          <Input placeholder="Nhập URL website công ty (không bắt buộc)" />
         </Form.Item>
         <div style={{ display: "flex", gap: "16px" }}>
           <Form.Item
@@ -283,21 +374,57 @@ const JobForm = () => {
             <Select options={currencyOptions} />
           </Form.Item>
         </div>
-        <Form.Item
-          label="Địa điểm làm việc"
-          name="location"
-          rules={[{ required: true, message: "Vui lòng nhập địa điểm" }]}
-        >
-          <Input placeholder="VD: Hà Nội, Việt Nam" />
-        </Form.Item>
+        <div style={{ display: "flex", gap: "16px" }}>
+          <Form.Item
+            label="Thành phố"
+            name="city"
+            rules={[{ required: true, message: "Vui lòng chọn thành phố" }]}
+            style={{ flex: 1 }}
+          >
+            <LocationSelector
+              disabledDistrict={true}
+              className="LocationSelector-Job"
+              onChange={(value) => {
+                form.setFieldsValue({ city: value });
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Địa chỉ chi tiết"
+            name="detailedAddress"
+            rules={[
+              { required: true, message: "Vui lòng nhập địa chỉ chi tiết" },
+            ]}
+            style={{ flex: 2, height: "36.5px" }}
+          >
+            <Input
+              placeholder="VD: Số 1, Đường ABC, Quận XYZ"
+              style={{ height: "36.5px" }}
+            />
+          </Form.Item>
+        </div>
         <Form.Item
           label="Kinh nghiệm yêu cầu"
           name="experience"
           rules={[
             { required: true, message: "Vui lòng nhập yêu cầu kinh nghiệm" },
+            {
+              pattern: /^[0-9]+$/,
+              message: "Vui lòng chỉ nhập số",
+            },
           ]}
         >
-          <Input placeholder="VD: 3+ năm" />
+          <Input
+            type="number"
+            min={0}
+            placeholder="VD: 3"
+            addonAfter="năm"
+            onKeyPress={(e) => {
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
+          />
         </Form.Item>
         <Form.Item
           label="Hạn nộp hồ sơ"
@@ -348,8 +475,54 @@ const JobForm = () => {
             },
           ]}
         >
-          <Input.TextArea placeholder="Mô tả chi tiết về công việc" />
+          <Input.TextArea
+            placeholder="Mô tả chi tiết về công việc"
+            style={{ minHeight: 400 }}
+          />
         </Form.Item>
+        <Form.Item
+          label="Danh mục công việc"
+          name="category"
+          rules={[
+            { required: true, message: "Vui lòng chọn danh mục công việc" },
+          ]}
+        >
+          <Select
+            mode="multiple"
+            placeholder="Chọn danh mục công việc"
+            options={categoryOptions}
+            style={{ width: "100%" }}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Thời gian làm việc"
+          name="workTime"
+          rules={[
+            { required: true, message: "Vui lòng chọn thời gian làm việc" },
+          ]}
+        >
+          <Select
+            placeholder="Chọn thời gian làm việc"
+            onChange={(value) => setWorkTimeType(value)}
+            options={[
+              { label: "Toàn thời gian", value: "fulltime" },
+              { label: "Bán thời gian", value: "parttime" },
+              { label: "Tùy chọn", value: "option" },
+            ]}
+            style={{ width: "100%" }}
+          />
+        </Form.Item>
+        {workTimeType === "option" && (
+          <Form.Item
+            name="customWorkTime"
+            rules={[
+              { required: true, message: "Vui lòng nhập thời gian làm việc" },
+            ]}
+          >
+            <Input placeholder="Nhập thời gian làm việc tùy chọn" />
+          </Form.Item>
+        )}
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={isSubmitting}>
             {isSubmitting ? "Đang xử lý..." : "Tạo công việc"}

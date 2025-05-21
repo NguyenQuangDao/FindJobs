@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 
-function JobFilters() {
-  const [activeTab1, setActiveTab1] = useState("Nổi bật");
-  const [activeTab2, setActiveTab2] = useState("Nổi bật");
+function JobFilters({ setSelectedTab, selectedTab }) {
   // Tab options
-  const tabOptions = ["Nổi bật", "Mới nhất", "Danh mục"];
+  const tabOptions = [
+    { label: "Nổi bật", value: "hot" },
+    { label: "Tất cả", value: "all" },
+    { label: "Danh mục", value: "category" },
+  ];
   // Handle tab 1
   const handleTab1Click = (tab) => {
-    setActiveTab1(tab);
-  };
-  // Handle tab 2
-  const handleTab2Click = (tab) => {
-    setActiveTab2(tab);
+    setSelectedTab(tab);
   };
 
   return (
@@ -19,23 +17,13 @@ function JobFilters() {
       <div className="filterTabs">
         {tabOptions.map((tab) => (
           <div
-            key={`row1-${tab}`}
-            className={`filterTab ${activeTab1 === tab ? "filterTabActive" : ""}`}
-            onClick={() => handleTab1Click(tab)}
+            key={`row1-${tab.value}`}
+            className={`filterTab ${
+              selectedTab === tab.value ? "filterTabActive" : ""
+            }`}
+            onClick={() => handleTab1Click(tab.value)}
           >
-            {tab}
-          </div>
-        ))}
-      </div>
-      
-      <div className="filterTabs">
-        {tabOptions.map((tab) => (
-          <div
-            key={`row2-${tab}`}
-            className={`filterTab ${activeTab2 === tab ? "filterTabActive" : ""}`}
-            onClick={() => handleTab2Click(tab)}
-          >
-            {tab}
+            {tab.label}
           </div>
         ))}
       </div>

@@ -15,6 +15,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    accountType: "personal",
   });
 
   const handleChange = (e) => {
@@ -35,17 +36,23 @@ const Register = () => {
       return;
     }
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
       const user = userCredential.user;
-      // Lưu thông tin vào Firestore
+
+      // Thêm accountType vào dữ liệu lưu trữ
       await setDoc(doc(db, "profiles", user.uid), {
         name: form.name,
         email: form.email,
+        accountType: form.accountType, // Thêm trường accountType
         createdAt: new Date(),
-        // Có thể thêm các trường khác nếu muốn
       });
+
       alertSuccess("Đăng ký thành công!");
-      navigate('/login')
+      navigate("/login");
     } catch (err) {
       alertError(err.message);
     }
@@ -75,7 +82,11 @@ const Register = () => {
                               type="text"
                               id="form3Example1c"
                               className="form-control"
-                              placeholder="Tên của bạn"
+                              placeholder={
+                                form.accountType === "personal"
+                                  ? "Tên của bạn"
+                                  : "Tên doanh nghiệp"
+                              }
                               name="name"
                               value={form.name}
                               onChange={handleChange}
@@ -135,6 +146,35 @@ const Register = () => {
                               onChange={handleChange}
                               required
                             />
+                          </div>
+                        </div>
+                        <div className="d-flex flex-row align-items-center mb-4">
+                          <i className="fas fa-briefcase fa-lg me-3 fa-fw" />
+                          <div className="form-outline flex-fill mb-0">
+                            <div className="d-flex gap-4">
+                              <label className="d-flex align-items-center gap-2">
+                                <input
+                                  type="radio"
+                                  name="accountType"
+                                  value="personal"
+                                  checked={form.accountType === "personal"}
+                                  onChange={handleChange}
+                                  className="form-check-input m-0"
+                                />
+                                Cá nhân
+                              </label>
+                              <label className="d-flex align-items-center gap-2">
+                                <input
+                                  type="radio"
+                                  name="accountType"
+                                  value="business"
+                                  checked={form.accountType === "business"}
+                                  onChange={handleChange}
+                                  className="form-check-input m-0"
+                                />
+                                Doanh nghiệp
+                              </label>
+                            </div>
                           </div>
                         </div>
                         <div className="d-flex justify-content-center ">

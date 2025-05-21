@@ -134,9 +134,11 @@ export const latestJobLists = [
     logo: "/assets/images/latest-jobs/company.jpg",
     location: "Paris, France",
     companyName: "Nomad",
-    JobType: "Full-Time",
+    JobType: "Part-Time",
     jobFields: [
       { name: "Marketing", value: true },
+      { name: "Design", value: true },
+      { name: "Design", value: true },
       { name: "Design", value: true },
     ],
   },
@@ -252,34 +254,43 @@ export const footerLinks = [
 
 // Job listing data
 export const jobListings = [
-  {
-    id: 1,
-    title: "Designer UI/UX",
-    companyName: "ELITE LIMITED",
-    description:
-      "We are looking for figma designers who can help desiging the entire mobile application ...",
-    skills: ["UI Designer", "Reactjs", "Landing Page", "NextJs"],
-    rating: { star: 4.6, evaluate: 40 },
-    verified: true,
-    proposals: "10",
-    fileCount: 144,
-    linkCompany: "http://localhost:5173/jobListMain",
-    companyLogo: "assets/logoCompany/company1.png",
-  },
-  {
-    id: 2,
-    title: "Figma Designer",
-    companyName: "ELITE LIMITED",
-    description:
-      "We are looking for figma designers who can help desiging the entire mobile application ...",
-    skills: ["UI Designer", "Figma", "Landing Page"],
-    rating: { star: 3.5, evaluate: 40 },
-    verified: true,
-    proposals: "7",
-    fileCount: 144,
-    linkCompany: "http://localhost:5173/jobListMain",
-    companyLogo: "assets/logoCompany/company2.png",
-  },
+  // {
+  //   id: 1,
+  //   title: "Designer UI/UX",
+  //   companyName: "ELITE LIMITED",
+  //   description:
+  //     "We are looking for figma designers who can help desiging the entire mobile application ...",
+  //   skills: [
+  //     "UI Designer",
+  //     "Reactjs",
+  //     "Landing Page",
+  //     "NextJs",
+  //     "Java",
+  //     "NoteJs",
+  //     "UI/UX",
+  //     "Firebase",
+  //   ],
+  //   rating: { star: 4.6, evaluate: 40 },
+  //   verified: true,
+  //   proposals: "10",
+  //   fileCount: 144,
+  //   linkCompany: "http://localhost:5173/jobListMain",
+  //   companyLogo: "assets/logoCompany/company1.png",
+  // },
+  // {
+  //   id: 2,
+  //   title: "Figma Designer",
+  //   companyName: "ELITE LIMITED",
+  //   description:
+  //     "We are looking for figma designers who can help desiging the entire mobile application ...",
+  //   skills: ["UI Designer", "Figma", "Landing Page"],
+  //   rating: { star: 3.5, evaluate: 40 },
+  //   verified: true,
+  //   proposals: "7",
+  //   fileCount: 144,
+  //   linkCompany: "http://localhost:5173/jobListMain",
+  //   companyLogo: "assets/logoCompany/company2.png",
+  // },
   {
     id: 3,
     title: "Back End Developper",
@@ -397,7 +408,7 @@ export const profile = {
   education: "Đại học Bách Khoa Hà Nội",
   social: [
     { name: "LinkedIn", link: "https://www.linkedin.com/in/nguyenquangdao" },
-    {name: "Facebook", link: "https://facebook.com/nguyenquangdao"},
+    { name: "Facebook", link: "https://facebook.com/nguyenquangdao" },
   ],
   avatar: "/assets/images/avatar/avatar1.jpg",
   experience:
