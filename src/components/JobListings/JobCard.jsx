@@ -26,9 +26,7 @@ const JobCard = ({ job, style, onClick }) => {
         </div>
         <div
           className={"jobCardInfo"}
-          onClick={() => {
-            onClick(job);
-          }}
+          onClick={onClick}
         >
           <div style={{ fontSize: "14px" }}>
             Mức lương:{" "}

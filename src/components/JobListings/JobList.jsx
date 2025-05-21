@@ -6,8 +6,8 @@ function JobList({ jobListings, onSelectJob }) {
   return (
     <div className={"jobListSection"}>
       {jobListings?.map((job) => (
-        <div>
-          <JobCard key={job.id} job={job} onClick={() => onSelectJob(job)} />
+        <div key={job.id}>
+          <JobCard job={job} onClick={() => onSelectJob(job)} />
         </div>
       ))}
     </div>

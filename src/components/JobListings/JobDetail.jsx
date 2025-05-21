@@ -138,7 +138,6 @@ function JobDetail({ job }) {
           style={{
             fontSize: "14px",
             display: "flex",
-            gap: "10px",
           }}
         >
           <span style={{ width: "65px" }}>Chi tiết:</span>

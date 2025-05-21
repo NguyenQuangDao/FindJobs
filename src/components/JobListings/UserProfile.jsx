@@ -26,6 +26,7 @@ function UserProfile() {
     });
     return () => unsubscribe();
   }, []);
+  console.log(profile);
 
   return (
     <div className={"profileContainer"}>
@@ -112,16 +113,18 @@ function UserProfile() {
           Xem hồ sơ
         </button>
       </section>
-      <section className={"viewJobForm"}>
-        <button
-          className="proposalButton"
-          onClick={() => {
-            navigate("/jobForm");
-          }}
-        >
-          Đăng tin tuyển dụng
-        </button>
-      </section>
+      {profile?.accountType !== "personal" && (
+        <section className={"viewJobForm"}>
+          <button
+            className="proposalButton"
+            onClick={() => {
+              navigate("/jobForm");
+            }}
+          >
+            Đăng tin tuyển dụng
+          </button>
+        </section>
+      )}
     </div>
   );
 }
