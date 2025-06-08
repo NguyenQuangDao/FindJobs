@@ -49,6 +49,12 @@ html.lenis body {
 .fs-7 {
   font-size: 0.75rem !important;
 }
-.color666{
+.color666 {
   color: #666;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

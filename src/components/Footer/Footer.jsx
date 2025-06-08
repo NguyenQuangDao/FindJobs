@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { footerLinks } from "../../Data/Data.js";
+import imgLogo from "../../../public/assets/images/header/JOBVN-ICON.png";
 
 // social lists
 
@@ -43,7 +44,6 @@ const socialLists = [
     url: "https://www.twitter.com",
   },
 ];
-
 const Footer = () => {
   return (
     <footer className="py-20 pb-10 bg-textLightDarkColor">
@@ -52,7 +52,7 @@ const Footer = () => {
           {/* left  */}
           <div className="">
             <Link>
-              <img src={"assets/images/Footer/JOBVN-LOGO.png"} alt="Logo" className="" />
+              <img src={imgLogo} alt="Logo" className="" />
             </Link>
             <p className="text-base w-5/6 mt-5 text-[#D6DDEB] ">
               Nền tảng tuyệt vời cho người tìm việc đam mê khởi nghiệp. Tìm công

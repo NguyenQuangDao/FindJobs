@@ -1,7 +1,7 @@
 .group_inputSocial {
-  margin-left: 30px;
   flex-direction: row;
   flex-wrap: wrap;
+  margin-top: 10px;
 }
 .group_inputSocial > .ant-space-item {
   min-width: 200px;

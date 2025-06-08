@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IoClose, IoMenuSharp } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider/AppProvider";
+import imgLogo from "../../../public/assets/images/header/JOBVN-ICON.png";
 const Header = () => {
   const { user, logout } = useAppContext();
 
@@ -28,7 +29,7 @@ const Header = () => {
           <Link className="flex items-center gap-2 cursor-pointer">
             <div className="w-8 h-8 rounded-full bg-slate-600/20">
               <img
-                src={"assets/images/header/JOBVN-ICON.png"}
+                src={imgLogo}
                 loading="lazy"
                 alt="Logo"
                 className="object-cover w-8 h-8"

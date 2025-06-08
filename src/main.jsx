@@ -19,6 +19,7 @@ import FeaturedJobs from "./components/FeaturedJobs/FeaturedJobs";
 import Home from "./components/Home/Home";
 import JobListMain from "./components/JobListings/JobListMain";
 import LatestJobs from "./components/LatestJobs/LatestJobs";
+
 import PageNotFount from "./components/PageNotFount/PageNotFount";
 import Profile from "./components/Profile/Profile";
 import Layout from "./Layout";
@@ -54,6 +55,13 @@ const router = createBrowserRouter(
       <Route path="/jobListMain" element={<JobListMain />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/jobForm" element={<JobForm />} />
+      <Route path="/companies" element={<CompanyList />} />
+      <Route path="/companies/:companyId" element={<CompanyDetail />} />
+      <Route
+        path="/companies/:companyId/reviews"
+        element={<CompanyReviews />}
+      />
+      <Route path="/jobs/:jobId/applicants" element={<ApplicantStats />} />
       <Route path="*" element={<PageNotFount />} />
     </Route>
   )
@@ -62,6 +70,10 @@ const router = createBrowserRouter(
 import { AppProvider } from "./AppProvider/AppProvider";
 import JobForm from "./components/JobForm/JobForm";
 import { CommonMessageProvider } from "./shared/CommonMessage";
+import CompanyList from "./components/CompanyList/CompanyList";
+import CompanyReviews from "./components/CompanyReviews/CompanyReviews";
+import ApplicantStats from "./components/ApplicantStats/ApplicantStats";
+import CompanyDetail from "./components/CompanyDetail/CompanyDetail";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
